@@ -1,56 +1,67 @@
 # Interview Coach Frontend
 
-Frontend for AI-powered Interview Preparation Platform.
+Frontend for an AI-powered Interview Preparation Platform that allows users to practice interviews, submit answers, and get AI-based feedback.
 
 ---
 
 ## 🚀 Features
 
-- 🎯 Topic & difficulty selection  
+- 🎯 Select topic and difficulty level  
 - 🤖 AI-generated interview questions  
 - 📝 Answer submission interface  
-- 📊 Performance dashboard  
+- 📊 Performance tracking dashboard  
 - 📈 AI-based feedback and insights  
 
 ---
 
 ## 🛠️ Tech Stack
 
-- React (Vite)
-- Tailwind CSS
-- JavaScript
+- React (Vite)  
+- Tailwind CSS  
+- JavaScript  
 
 ---
 
-## ⚙️ Setup
+## ⚙️ Setup & Run
 
 1. Clone the repository
 
 ```bash
 git clone https://github.com/Mayankgupta44/interview-coach-frontend.git
-Install dependencies
+````
+
+2. Install dependencies
+
+```bash
 npm install
-Run the app
+```
+
+3. Start the development server
+
+```bash
 npm run dev
-🔗 Backend Repository
-
-https://github.com/Mayankgupta44/interview-coach-backend
-
-📌 Status
-
-Frontend development in progress. Core UI and flow implemented.
-
+```
 
 ---
 
-## ✅ 3. Small cleanup (optional but good)
+## 🔗 Backend Repository
 
-- `.env` check karo (API URL etc.)
-- unnecessary files remove karo (agar hain)
+[https://github.com/Mayankgupta44/interview-coach-backend](https://github.com/Mayankgupta44/interview-coach-backend)
 
 ---
 
-## 💯 Commit message
+## 🔄 Workflow
 
-```text
-docs: replace default README with project details
+1. User selects topic and difficulty
+2. System generates interview questions using AI
+3. User submits answers
+4. Backend evaluates responses
+5. Frontend displays feedback and insights
+
+---
+
+## 📌 Status
+
+Frontend is under active development. Core UI and main flow are implemented.
+
+```
