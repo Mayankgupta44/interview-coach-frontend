@@ -204,7 +204,7 @@ export default function InterviewSessionDetailPage() {
         </section>
 
         {error ? (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-danger">
+          <div className="rounded-xl bg-danger/10 text-danger px-4 py-3 text-sm">
             {error}
           </div>
         ) : null}
@@ -219,7 +219,7 @@ export default function InterviewSessionDetailPage() {
             return (
               <section
                 key={question.id}
-                className="rounded-xl border border-gray-200 bg-card p-6 shadow-soft"
+                className="rounded-xl bg-card p-6 shadow-soft"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
@@ -306,7 +306,7 @@ export default function InterviewSessionDetailPage() {
 
 function ProgressCard({ label, value }) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-card p-5 shadow-soft">
+    <div className="rounded-xl bg-card p-5 shadow-soft">
       <p className="text-sm text-textSecondary">{label}</p>
       <h3 className="mt-2 text-3xl font-bold text-textPrimary">{value}</h3>
     </div>
@@ -315,7 +315,7 @@ function ProgressCard({ label, value }) {
 
 function SectionBlock({ title, children }) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-appBg p-5">
+    <div className="rounded-xl bg-appBg p-5">
       <h3 className="mb-4 text-sm font-semibold text-textPrimary">{title}</h3>
       {children}
     </div>

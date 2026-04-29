@@ -76,8 +76,8 @@ export default function SkillGapPage() {
           <div
             className={`rounded-xl px-4 py-3 text-sm ${
               report
-                ? "border border-yellow-200 bg-yellow-50 text-warning"
-                : "border border-red-200 bg-red-50 text-danger"
+                ? "bg-warning/10 text-warning text-warning"
+                : "bg-danger/10 text-danger text-danger"
             }`}
           >
             {report

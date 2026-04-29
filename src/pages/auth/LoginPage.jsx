@@ -63,7 +63,7 @@ export default function LoginPage() {
       title="Welcome back"
       subtitle="Login to continue your interview preparation"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <Input
           label="Email"
           name="email"
@@ -85,17 +85,17 @@ export default function LoginPage() {
         />
 
         {serverError ? (
-          <p className="text-sm text-red-500">{serverError}</p>
+          <p className="text-sm text-danger">{serverError}</p>
         ) : null}
 
-        <Button type="submit" disabled={submitting}>
+        <Button type="submit" disabled={submitting} className="w-full">
           {submitting ? "Logging in..." : "Login"}
         </Button>
       </form>
 
       <p className="mt-6 text-sm text-textSecondary">
         Don&apos;t have an account?{" "}
-        <Link to="/register" className="font-medium text-textPrimary underline">
+        <Link to="/register" className="font-medium text-primary hover:underline">
           Register
         </Link>
       </p>

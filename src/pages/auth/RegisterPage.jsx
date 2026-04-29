@@ -70,7 +70,7 @@ export default function RegisterPage() {
       title="Create your account"
       subtitle="Start preparing for interviews with AI guidance"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <Input
           label="Full name"
           name="fullName"
@@ -101,7 +101,7 @@ export default function RegisterPage() {
         />
 
         {serverError ? (
-          <p className="text-sm text-red-500">{serverError}</p>
+          <p className="text-sm text-danger">{serverError}</p>
         ) : null}
 
         <Button type="submit" disabled={submitting}>
@@ -111,7 +111,7 @@ export default function RegisterPage() {
 
       <p className="mt-6 text-sm text-textSecondary">
         Already have an account?{" "}
-        <Link to="/login" className="font-medium text-textPrimary underline">
+        <Link to="/login" className="font-medium text-primary hover:underline">
           Login
         </Link>
       </p>

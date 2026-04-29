@@ -1,7 +1,9 @@
 export default function SectionCard({ title, subtitle, children, action }) {
   return (
-    <section className="rounded-card bg-card p-6 shadow-soft hover:shadow-md transition-all duration-200 h-full flex flex-col">
-      {" "}
+    <section className="rounded-card bg-card backdrop-blur-md 
+    p-6 shadow-soft 
+    hover:shadow-blue-500/30 hover:scale-[1.01] transition-all duration-200 
+    h-full flex flex-col">
       {(title || subtitle || action) && (
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -12,7 +14,9 @@ export default function SectionCard({ title, subtitle, children, action }) {
             )}
 
             {subtitle && (
-              <p className="mt-1 text-sm text-textSecondary">{subtitle}</p>
+              <p className="mt-1 text-sm text-textSecondary">
+                {subtitle}
+              </p>
             )}
           </div>
 
@@ -21,7 +25,7 @@ export default function SectionCard({ title, subtitle, children, action }) {
           )}
         </div>
       )}
-      {/* MAIN CONTENT AREA */}
+
       <div className="flex flex-col flex-1 gap-4">{children}</div>
     </section>
   );

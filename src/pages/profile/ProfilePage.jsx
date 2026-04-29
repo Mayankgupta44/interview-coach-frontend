@@ -173,7 +173,7 @@ export default function ProfilePage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl border border-gray-200 bg-card p-6 shadow-soft">
+        <section className="rounded-xl bg-card p-6 shadow-soft">
           <h1 className="text-2xl font-bold text-textPrimary">Profile</h1>
           <p className="mt-2 text-sm text-textSecondary">
             Manage your personal details, role preference, skills, and social
@@ -182,13 +182,13 @@ export default function ProfilePage() {
         </section>
 
         {serverError ? (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-danger">
+          <div className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
             {serverError}
           </div>
         ) : null}
 
         {loading ? (
-          <div className="rounded-xl border border-gray-200 bg-card p-6 shadow-soft">
+          <div className="rounded-xl bg-card p-6 shadow-soft">
             <p className="text-sm text-textSecondary">Loading profile...</p>
           </div>
         ) : (
@@ -200,7 +200,7 @@ export default function ProfilePage() {
             <div className="lg:col-span-2">
               <form
                 onSubmit={handleSubmit}
-                className="rounded-xl border border-gray-200 bg-card p-6 shadow-soft"
+                className="rounded-xl bg-card p-6 shadow-soft"
               >
                 <h2 className="text-lg font-semibold text-textPrimary">
                   Edit Profile
@@ -223,14 +223,14 @@ export default function ProfilePage() {
                   />
 
                   <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-textPrimary">
                       Experience Level
                     </label>
                     <select
                       name="experienceLevel"
                       value={formData.experienceLevel}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none transition focus:ring-2 focus:ring-gray-200"
+                      className="w-full rounded-xl bg-appBg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-secondary/30"
                     >
                       {experienceOptions.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -248,11 +248,11 @@ export default function ProfilePage() {
                   />
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-textPrimary">
                       Profile Image
                     </label>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-3">
                       {/* Hidden Input */}
                       <input
                         type="file"
@@ -267,7 +267,7 @@ export default function ProfilePage() {
                       {/* Custom Button */}
                       <label
                         htmlFor="profileImage"
-                        className="cursor-pointer rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 transition"
+                        className="cursor-pointer rounded-xl bg-appBg px-4 py-2 text-sm font-medium text-textPrimary hover:bg-appBg/70"
                       >
                         Choose File
                       </label>
@@ -285,7 +285,7 @@ export default function ProfilePage() {
                       type="button"
                       onClick={handleUploadProfileImage}
                       disabled={!profileImageFile || uploadingImage}
-                      className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="rounded-xl bg-primary/10 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/20"
                     >
                       {uploadingImage ? "Uploading..." : "Upload Image"}
                     </button>
@@ -334,15 +334,19 @@ export default function ProfilePage() {
                   />
                 </div>
 
-                <div className="mt-6 max-w-xs">
-                  <Button type="submit" disabled={saving}>
+                <div className="mt-6">
+                  <Button
+                    type="submit"
+                    disabled={saving}
+                    className="w-full sm:w-auto"
+                  >
                     {saving ? "Saving..." : "Save Changes"}
                   </Button>
                 </div>
 
-                {successMessage ? (
-                  <p className="mt-3 text-sm text-success">{successMessage}</p>
-                ) : null}
+                {successMessage && (
+                  <p className="mt-4 text-sm text-success">{successMessage}</p>
+                )}
               </form>
             </div>
           </div>

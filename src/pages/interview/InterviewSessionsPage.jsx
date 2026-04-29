@@ -80,7 +80,7 @@ export default function InterviewSessionsPage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl border border-gray-200 bg-card p-6 shadow-soft">
+        <section className="rounded-xl bg-card p-6 shadow-soft">
           <h1 className="text-2xl font-bold text-textPrimary">Mock Interviews</h1>
           <p className="mt-2 text-sm text-textSecondary">
             Start a new session and practice AI-generated questions for your
@@ -89,7 +89,7 @@ export default function InterviewSessionsPage() {
         </section>
 
         {error ? (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+          <div className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
             {error}
           </div>
         ) : null}
@@ -115,7 +115,7 @@ export default function InterviewSessionsPage() {
                 name="interviewType"
                 value={formData.interviewType}
                 onChange={handleChange}
-                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none transition focus:ring-2 focus:ring-gray-200"
+                className="w-full rounded-xl bg-appBg p-4 text-left transition hover:bg-appBg/70"
               >
                 {interviewTypeOptions.map((option) => (
                   <option key={option.value} value={option.value}>

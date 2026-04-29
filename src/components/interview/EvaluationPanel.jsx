@@ -33,7 +33,12 @@ export default function EvaluationPanel({ evaluation }) {
       </div>
 
       {evaluation.isShallow ? (
-        <div className="rounded-xl bg-warning/10 p-4 text-sm text-warning">
+        <div className="
+        rounded-xl bg-warning/10 p-4 text-sm text-warning
+        dark:bg-yellow-500/10
+        dark:shadow-[0_0_15px_rgba(245,158,11,0.2)]
+        transition hover:scale-[1.01]
+        ">
           This answer looks shallow. Add more technical depth, examples, and
           clear reasoning.
         </div>
@@ -79,9 +84,11 @@ export default function EvaluationPanel({ evaluation }) {
         />
       </div>
 
-      <div className="rounded-xl bg-success/10 p-5">
-        <h3 className="text-sm font-semibold text-green-900">Ideal Answer</h3>
-        <p className="mt-3 whitespace-pre-line text-sm leading-6 text-green-950">
+      <div className="rounded-xl bg-success/10 dark:bg-green-500/10 
+      backdrop-blur-md p-5 
+      shadow-soft dark:shadow-green-500/10">
+        <h3 className="text-sm font-semibold text-green-900 dark:text-green-400">Ideal Answer</h3>
+        <p className="mt-3 whitespace-pre-line text-sm leading-6 text-green-950 dark:text-green-300">
           {evaluation.improvedAnswer}
         </p>
       </div>

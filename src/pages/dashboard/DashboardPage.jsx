@@ -63,7 +63,7 @@ export default function DashboardPage() {
       await loadDashboard();
     } catch (err) {
       setError(
-        err?.response?.data?.message || "Failed to generate recommendations."
+        err?.response?.data?.message || "Failed to generate recommendations.",
       );
     } finally {
       setGenerating(false);
@@ -91,8 +91,8 @@ export default function DashboardPage() {
                 {user?.fullName || "Candidate"}
               </h1>
               <p className="mt-2 max-w-2xl text-sm text-blue-100">
-                Track your interview progress, weak areas, score trends, and next
-                preparation actions from one place.
+                Track your interview progress, weak areas, score trends, and
+                next preparation actions from one place.
               </p>
             </div>
 
@@ -154,16 +154,33 @@ export default function DashboardPage() {
             {dashboard?.scoreTrend?.length ? (
               <ResponsiveContainer width="100%" height={280}>
                 <LineChart data={dashboard.scoreTrend}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis domain={[0, 100]} />
-                  <Tooltip />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fontSize: 12, fill: "#6B7280" }}
+                  />
+
+                  <YAxis
+                    domain={[0, 100]}
+                    tick={{ fontSize: 12, fill: "#6B7280" }}
+                  />
+
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      border: "none",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                    }}
+                  />
+
                   <Line
                     type="monotone"
                     dataKey="averageScore"
                     stroke="#1E3A8A"
                     strokeWidth={3}
-                    dot={{ r: 4 }}
+                    dot={{ r: 5 }}
+                    activeDot={{ r: 7 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -182,10 +199,33 @@ export default function DashboardPage() {
             {dashboard?.weakAreaStats?.length ? (
               <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={dashboard.weakAreaStats}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="topic" />
-                  <YAxis allowDecimals={false} />
-                  <Tooltip />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+
+                  <XAxis
+                    dataKey="topic"
+                    interval={0}
+                    angle={-25}
+                    textAnchor="end"
+                    height={70}
+                    tick={{ fontSize: 11, fill: "#6B7280" }}
+                    tickFormatter={(value) =>
+                      value.length > 14 ? value.slice(0, 14) + "..." : value
+                    }
+                  />
+
+                  <YAxis
+                    allowDecimals={false}
+                    tick={{ fontSize: 12, fill: "#6B7280" }}
+                  />
+
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      border: "none",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                    }}
+                  />
+
                   <Bar dataKey="count" fill="#3B82F6" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -243,9 +283,9 @@ export default function DashboardPage() {
             subtitle="Click any session to review answers and evaluations"
           >
             {dashboard?.recentScoreHistory?.length ? (
-              <div className="overflow-hidden rounded-xl border border-gray-200">
+              <div className="overflow-hidden rounded-xl bg-card shadow-soft">
                 <table className="min-w-full text-sm">
-                  <thead className="bg-gray-50 text-left text-textSecondary">
+                  <thead className="bg-appBg text-left text-textSecondary">
                     <tr>
                       <th className="px-4 py-3 font-medium">Role</th>
                       <th className="px-4 py-3 font-medium">Score</th>
@@ -253,22 +293,28 @@ export default function DashboardPage() {
                       <th className="px-4 py-3 font-medium">Date</th>
                     </tr>
                   </thead>
+
                   <tbody>
                     {dashboard.recentScoreHistory.map((item) => (
                       <tr
                         key={item.sessionId}
-                        onClick={() => navigate(`/interviews/${item.sessionId}`)}
-                        className="cursor-pointer border-t border-gray-100 transition-all duration-200 hover:bg-blue-50"
+                        onClick={() =>
+                          navigate(`/interviews/${item.sessionId}`)
+                        }
+                        className="cursor-pointer transition-all duration-200 hover:bg-appBg"
                       >
                         <td className="px-4 py-3 font-medium text-textPrimary">
                           {item.targetRole}
                         </td>
+
                         <td className="px-4 py-3">
                           <ScorePill score={item.averageScore} />
                         </td>
+
                         <td className="px-4 py-3 text-textSecondary">
                           {item.totalQuestions}
                         </td>
+
                         <td className="px-4 py-3 text-textSecondary">
                           {formatDate(item.createdAt)}
                         </td>

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function EmptyState({
   title,
   description,
@@ -5,17 +7,28 @@ export default function EmptyState({
   buttonLink,
 }) {
   return (
-    <div className="rounded-xl bg-appBg p-8 text-center">
-      <h3 className="text-base font-semibold text-textPrimary">{title}</h3>
+    <div
+      className="rounded-xl bg-appBg dark:bg-white/5 backdrop-blur-md 
+        p-8 text-center 
+        shadow-soft dark:shadow-blue-500/10 
+        hover:shadow-blue-500/20 transition"
+    >
+      <h3 className="text-base font-semibold text-textPrimary dark:text-white">
+        {title}
+      </h3>
 
-      <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-textSecondary">
+      <p className="mt-2 text-sm text-textSecondary dark:text-gray-300">
         {description}
       </p>
 
       {buttonText && buttonLink && (
         <Link
           to={buttonLink}
-          className="mt-5 inline-flex rounded-xl bg-primary px-4 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-secondary"
+          className="mt-5 inline-flex rounded-xl 
+            bg-gradient-to-r from-blue-600 to-blue-400 
+            px-4 py-3 text-sm text-white 
+            hover:shadow-blue-500/40 hover:scale-105 
+            transition"
         >
           {buttonText}
         </Link>

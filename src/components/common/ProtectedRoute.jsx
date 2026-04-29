@@ -6,7 +6,12 @@ export default function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <PageLoader />;
+    return (
+      <div className="flex items-center justify-center min-h-screen 
+        bg-appBg dark:bg-[#020617]">
+        <PageLoader />
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
