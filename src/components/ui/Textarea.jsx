@@ -22,13 +22,16 @@ export default function Textarea({
         placeholder={placeholder}
         rows={rows}
         disabled={disabled}
-        className={`w-full rounded-xl bg-appBg dark:bg-white/5 
-        shadow-inner px-4 py-3 text-sm text-textPrimary dark:text-gray-200 
-        outline-none transition-all duration-200 
+        className={`w-full rounded-xl 
+        !bg-white 
+        dark:bg-white/5 
+        px-4 py-3 text-sm 
+        text-textPrimary dark:text-gray-200 
+        outline-none transition-[box-shadow,transform] duration-200
         placeholder:text-textSecondary/60 dark:placeholder:text-gray-400 
         focus:ring-2 focus:ring-secondary/30 
-        resize-y border border-transparent dark:border-white/10
-        disabled:cursor-not-allowed disabled:opacity-60 ${
+        resize-y border border-gray-400 dark:border-white/10
+        disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-white/10 ${
           error ? "focus:ring-danger/30" : ""
         } ${className}`}
       />

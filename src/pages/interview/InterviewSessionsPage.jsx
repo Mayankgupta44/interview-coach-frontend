@@ -80,7 +80,7 @@ export default function InterviewSessionsPage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl bg-card p-6 shadow-soft">
+        <section className="rounded-xl bg-card p-6 shadow-soft border border-gray-200">
           <h1 className="text-2xl font-bold text-textPrimary">Mock Interviews</h1>
           <p className="mt-2 text-sm text-textSecondary">
             Start a new session and practice AI-generated questions for your
@@ -115,8 +115,10 @@ export default function InterviewSessionsPage() {
                 name="interviewType"
                 value={formData.interviewType}
                 onChange={handleChange}
-                className="w-full rounded-xl bg-appBg p-4 text-left transition hover:bg-appBg/70"
-              >
+                className="w-full rounded-xl bg-appBg 
+                border border-gray-200 
+                px-4 py-3 text-sm outline-none 
+                focus:ring-2 focus:ring-secondary/30"              >
                 {interviewTypeOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -163,7 +165,7 @@ export default function InterviewSessionsPage() {
                 <button
                   key={session.id}
                   onClick={() => navigate(`/interviews/${session.id}`)}
-                  className="w-full rounded-xl border border-gray-200 p-4 text-left transition hover:bg-gray-50"
+                  className="w-full rounded-xl border border-gray-200 p-4 text-left transition hover:bg-gray-100"
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>

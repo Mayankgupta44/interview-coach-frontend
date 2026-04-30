@@ -46,7 +46,7 @@ export default function Button({
       rounded-xl px-4 py-3 text-sm font-medium 
       transition-all duration-200 
       focus:outline-none focus:ring-secondary/30 dark:focus:ring-blue-500/30 
-      disabled:cursor-not-allowed disabled:opacity-60 
+      disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-white/10 
       shadow-soft dark:shadow-blue-500/10 
       ${
         variants[variant] || variants.primary

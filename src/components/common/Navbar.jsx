@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Avatar from "../ui/Avatar";
-import ThemeToggle from "../ui/ThemeToggle";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -37,7 +36,7 @@ export default function Navbar() {
   return (
     <header
       className="sticky top-0 z-40 
-      bg-card/80 dark:bg-[#020617]/80 
+      bg-card/80 dark:bg-[#020617]
       backdrop-blur-lg 
       border-b border-gray-200 dark:border-white/10 
       shadow-sm dark:shadow-[0_0_20px_rgba(59,130,246,0.15)]"
@@ -74,7 +73,6 @@ export default function Navbar() {
 
         <div className="relative">
           <div className="flex items-center gap-3">
-            <ThemeToggle />
             <button
               onClick={() => setOpen((prev) => !prev)}
               className="flex items-center gap-3 rounded-xl px-2 py-1.5 

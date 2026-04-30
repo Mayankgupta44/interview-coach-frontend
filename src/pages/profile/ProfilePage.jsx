@@ -173,7 +173,9 @@ export default function ProfilePage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl bg-card p-6 shadow-soft">
+        <section className="rounded-xl bg-white
+        p-6 shadow-soft 
+        border border-gray-200">
           <h1 className="text-2xl font-bold text-textPrimary">Profile</h1>
           <p className="mt-2 text-sm text-textSecondary">
             Manage your personal details, role preference, skills, and social
@@ -188,7 +190,9 @@ export default function ProfilePage() {
         ) : null}
 
         {loading ? (
-          <div className="rounded-xl bg-card p-6 shadow-soft">
+          <div className="rounded-xl bg-white
+          p-6 shadow-soft 
+          border border-gray-200">
             <p className="text-sm text-textSecondary">Loading profile...</p>
           </div>
         ) : (
@@ -197,10 +201,12 @@ export default function ProfilePage() {
               <ProfileCard profile={profile || formData} />
             </div>
 
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 opacity-100">
               <form
                 onSubmit={handleSubmit}
-                className="rounded-xl bg-card p-6 shadow-soft"
+                className="rounded-xl bg-white 
+                p-6 shadow-soft 
+                border border-gray-200"
               >
                 <h2 className="text-lg font-semibold text-textPrimary">
                   Edit Profile
@@ -230,8 +236,10 @@ export default function ProfilePage() {
                       name="experienceLevel"
                       value={formData.experienceLevel}
                       onChange={handleChange}
-                      className="w-full rounded-xl bg-appBg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-secondary/30"
-                    >
+                      className="w-full rounded-xl bg-white 
+                      border border-gray-300 dark:border-white/10
+                      px-4 py-3 text-sm outline-none 
+                      focus:ring-2 focus:ring-secondary/30"                    >
                       {experienceOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
@@ -267,8 +275,10 @@ export default function ProfilePage() {
                       {/* Custom Button */}
                       <label
                         htmlFor="profileImage"
-                        className="cursor-pointer rounded-xl bg-appBg px-4 py-2 text-sm font-medium text-textPrimary hover:bg-appBg/70"
-                      >
+                        className="cursor-pointer rounded-xl bg-appBg 
+                        border border-gray-200 
+                        px-4 py-2 text-sm font-medium text-textPrimary 
+                        hover:bg-gray-100"                      >
                         Choose File
                       </label>
 
@@ -337,7 +347,7 @@ export default function ProfilePage() {
                 <div className="mt-6">
                   <Button
                     type="submit"
-                    disabled={saving}
+                    disabled={false}
                     className="w-full sm:w-auto"
                   >
                     {saving ? "Saving..." : "Save Changes"}

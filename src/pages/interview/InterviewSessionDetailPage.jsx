@@ -219,7 +219,8 @@ export default function InterviewSessionDetailPage() {
             return (
               <section
                 key={question.id}
-                className="rounded-xl bg-card p-6 shadow-soft"
+                className="rounded-xl bg-card p-6 shadow-soft 
+                border border-gray-200"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
@@ -306,7 +307,8 @@ export default function InterviewSessionDetailPage() {
 
 function ProgressCard({ label, value }) {
   return (
-    <div className="rounded-xl bg-card p-5 shadow-soft">
+    <div className="rounded-xl bg-card p-5 shadow-soft 
+    border border-gray-200">
       <p className="text-sm text-textSecondary">{label}</p>
       <h3 className="mt-2 text-3xl font-bold text-textPrimary">{value}</h3>
     </div>
@@ -315,7 +317,8 @@ function ProgressCard({ label, value }) {
 
 function SectionBlock({ title, children }) {
   return (
-    <div className="rounded-xl bg-appBg p-5">
+    <div className="rounded-xl bg-appBg p-5 
+    border border-gray-200">
       <h3 className="mb-4 text-sm font-semibold text-textPrimary">{title}</h3>
       {children}
     </div>

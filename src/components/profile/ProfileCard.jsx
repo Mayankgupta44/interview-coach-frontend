@@ -18,10 +18,11 @@ export default function ProfileCard({ profile }) {
 
   return (
     <div className="rounded-xl 
-    bg-card 
+    bg-white
     dark:bg-[rgba(15,23,42,0.7)] 
     p-6 
     shadow-soft dark:shadow-blue-500/10 
+    border border-gray-200
     hover:shadow-blue-500/20 transition">
       <div className="flex flex-col items-center text-center">
         <Avatar
