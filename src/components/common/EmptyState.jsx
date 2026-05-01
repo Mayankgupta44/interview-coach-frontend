@@ -8,27 +8,36 @@ export default function EmptyState({
 }) {
   return (
     <div
-      className="rounded-xl bg-appBg dark:bg-white/5 backdrop-blur-md 
+      className="
+        rounded-xl 
+        bg-[#0f172a]
+        border border-white/10
         p-8 text-center 
-        shadow-soft dark:shadow-blue-500/10 
-        hover:shadow-blue-500/20 transition"
+        shadow-sm
+        transition
+        hover:shadow-blue-500/20
+      "
     >
-      <h3 className="text-base font-semibold text-textPrimary dark:text-white">
+      <h3 className="text-base font-semibold text-white">
         {title}
       </h3>
 
-      <p className="mt-2 text-sm text-textSecondary dark:text-gray-300">
+      <p className="mt-2 text-sm text-gray-400">
         {description}
       </p>
 
       {buttonText && buttonLink && (
         <Link
           to={buttonLink}
-          className="mt-5 inline-flex rounded-xl 
-            bg-gradient-to-r from-blue-600 to-blue-400 
+          className="
+            mt-5 inline-flex 
+            rounded-xl 
+            bg-gradient-to-r from-blue-600 to-blue-500 
             px-4 py-3 text-sm text-white 
-            hover:shadow-blue-500/40 hover:scale-105 
-            transition"
+            transition 
+            hover:scale-105 
+            hover:shadow-blue-500/30
+          "
         >
           {buttonText}
         </Link>

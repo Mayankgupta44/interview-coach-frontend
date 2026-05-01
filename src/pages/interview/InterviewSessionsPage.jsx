@@ -80,16 +80,18 @@ export default function InterviewSessionsPage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl bg-card p-6 shadow-soft border border-gray-200">
-          <h1 className="text-2xl font-bold text-textPrimary">Mock Interviews</h1>
-          <p className="mt-2 text-sm text-textSecondary">
-            Start a new session and practice AI-generated questions for your
-            target role.
+        <section className="rounded-xl bg-[#0f172a] border border-white/10 p-6">
+          <h1 className="text-2xl font-bold text-white">
+            Mock Interviews
+          </h1>
+
+          <p className="mt-2 text-sm text-gray-400 max-w-2xl">
+            Start a new session and practice AI-generated questions for your target role.
           </p>
         </section>
 
         {error ? (
-          <div className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+          <div className="rounded-xl bg-red-500/10 text-red-400 border border-red-500/20">
             {error}
           </div>
         ) : null}
@@ -115,8 +117,9 @@ export default function InterviewSessionsPage() {
                 name="interviewType"
                 value={formData.interviewType}
                 onChange={handleChange}
-                className="w-full rounded-xl bg-appBg 
-                border border-gray-200 
+                className="w-full rounded-xl
+                bg-[#020617] border border-white/10 text-white
+                focus:ring-blue-500/30
                 px-4 py-3 text-sm outline-none 
                 focus:ring-2 focus:ring-secondary/30"              >
                 {interviewTypeOptions.map((option) => (
@@ -158,21 +161,25 @@ export default function InterviewSessionsPage() {
           subtitle="Resume reviewing completed or in-progress interviews"
         >
           {loading ? (
-            <p className="text-sm text-textSecondary">Loading sessions...</p>
+            <p className="text-sm text-gray-400">Loading sessions...</p>
           ) : sessions.length ? (
             <div className="space-y-3">
               {sessions.map((session) => (
                 <button
                   key={session.id}
                   onClick={() => navigate(`/interviews/${session.id}`)}
-                  className="w-full rounded-xl border border-gray-200 p-4 text-left transition hover:bg-gray-100"
+                  className="w-full rounded-xl border p-4 text-left transition border-white/10 
+                  bg-[#0f172a]
+                  hover:bg-white/5
+                  text-white
+                  text-gray-400"
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <h3 className="text-sm font-semibold text-textPrimary">
+                      <h3 className="text-sm font-semibold text-white">
                         {session.targetRole}
                       </h3>
-                      <p className="mt-1 text-sm text-textSecondary">
+                      <p className="mt-1 text-sm text-gray-400">
                         {session.interviewType} • {session.totalQuestions} questions
                       </p>
                       <p className="mt-1 text-xs text-gray-500">

@@ -5,10 +5,8 @@ export default function AttemptHistory({ attempts = [] }) {
   if (!attempts.length) return null;
 
   return (
-    <div className="rounded-xl bg-card dark:bg-[rgba(15,23,42,0.7)] p-5 
-    shadow-soft dark:shadow-blue-500/10 
-    hover:shadow-blue-500/20 hover:scale-[1.01] transition-all duration-300">
-      <h3 className="text-sm font-semibold text-textPrimary dark:text-white">
+    <div className="rounded-xl bg-[#0f172a] border border-white/10 p-5 shadow-sm transition hover:shadow-blue-500/20 hover:scale-[1.01]">
+      <h3 className="text-sm font-semibold text-white">
         Attempt History
       </h3>
 
@@ -16,16 +14,15 @@ export default function AttemptHistory({ attempts = [] }) {
         {attempts.map((attempt) => (
           <div
             key={attempt.id}
-            className="rounded-xl bg-appBg dark:bg-[#020617]/60 
-            p-4 border border-transparent dark:border-white/10"
+            className="rounded-xl bg-[#020617] p-4 border border-white/10"
           >
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm font-semibold text-textPrimary dark:text-white">
+                <p className="text-sm font-semibold text-white">
                   Attempt #{attempt.attemptNumber}
                   {attempt.isImproved ? " • Improved" : " • Original"}
                 </p>
-                <p className="mt-1 text-xs text-textSecondary dark:text-gray-300">
+                <p className="mt-1 text-xs text-gray-400">
                   {formatDate(attempt.createdAt)}
                 </p>
               </div>
@@ -35,7 +32,7 @@ export default function AttemptHistory({ attempts = [] }) {
               </Badge>
             </div>
 
-            <p className="mt-3 whitespace-pre-line text-sm leading-6 text-textSecondary dark:text-gray-300">
+            <p className="mt-3 whitespace-pre-line text-sm leading-6 text-gray-400">
               {attempt.answerText}
             </p>
           </div>

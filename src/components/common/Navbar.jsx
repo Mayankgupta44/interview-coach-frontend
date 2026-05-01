@@ -16,8 +16,8 @@ export default function Navbar() {
   const navClass = ({ isActive }) =>
     `rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 ${
       isActive
-        ? "bg-primary/10 text-primary dark:text-blue-400 dark:shadow-blue-500/20"
-        : "text-textSecondary hover:bg-appBg hover:text-textPrimary"
+        ? "bg-blue-500/10 text-blue-400 dark:shadow-blue-500/20"
+        : "text-gray-400 hover:bg-white/10 hover:text-white"
     }`;
 
   const API_BASE_URL =
@@ -36,18 +36,19 @@ export default function Navbar() {
   return (
     <header
       className="sticky top-0 z-40 
-      bg-card/80 dark:bg-[#020617]
+      bg-[#020617]
+      border-white/10
       backdrop-blur-lg 
-      border-b border-gray-200 dark:border-white/10 
+      border-b
       shadow-sm dark:shadow-[0_0_20px_rgba(59,130,246,0.15)]"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-sm font-bold text-white">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/20 text-blue-400 text-sm font-bold text-white">
               IC
             </div>
-            <span className="hidden text-lg font-bold text-textPrimary sm:block">
+            <span className="hidden text-lg font-bold text-white sm:block">
               Interview Coach
             </span>
           </Link>
@@ -77,7 +78,7 @@ export default function Navbar() {
               onClick={() => setOpen((prev) => !prev)}
               className="flex items-center gap-3 rounded-xl px-2 py-1.5 
                 transition-all duration-200 
-                hover:bg-appBg dark:hover:bg-white/10 
+                hover:bg-white/10
                 hover:shadow-blue-500/20"
             >
               <Avatar
@@ -86,29 +87,30 @@ export default function Navbar() {
               />
 
               <div className="hidden text-left sm:block">
-                <p className="max-w-32 truncate text-sm font-semibold text-textPrimary">
+                <p className="max-w-32 truncate text-sm font-semibold text-white">
                   {user?.fullName || "User"}
                 </p>
-                <p className="max-w-32 truncate text-xs text-textSecondary">
+                <p className="max-w-32 truncate text-xs text-gray-400">
                   {user?.targetRole || "Interview Prep"}
                 </p>
               </div>
 
-              <span className="text-xs text-textSecondary">▾</span>
+              <span className="text-xs text-gray-400">▾</span>
             </button>
           </div>
 
           {open && (
             <div
               className="absolute right-0 mt-3 w-56 overflow-hidden rounded-xl 
-              bg-card dark:bg-[rgba(15,23,42,0.7)] 
+              bg-[#0f172a]
+              border border-white/10
               shadow-soft dark:shadow-blue-500/10"
             >
               <div className="px-4 py-3">
-                <p className="truncate text-sm font-semibold text-textPrimary">
+                <p className="truncate text-sm font-semibold text-white">
                   {user?.fullName || "User"}
                 </p>
-                <p className="truncate text-xs text-textSecondary">
+                <p className="truncate text-xs text-gray-400">
                   {user?.email}
                 </p>
               </div>
@@ -166,9 +168,9 @@ function DropdownLink({ to, label, setOpen }) {
       to={to}
       onClick={() => setOpen(false)}
       className="block rounded-lg px-3 py-2 text-sm font-medium 
-        text-textSecondary transition-all duration-200 
-        hover:bg-appBg dark:hover:bg-white/10 
-        hover:text-textPrimary"
+        text-gray-400 transition-all duration-200 
+        hover:bg-white/10 dark:hover:bg-white/10 
+        hover:text-white"
     >
       {label}
     </Link>

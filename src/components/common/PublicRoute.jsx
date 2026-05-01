@@ -7,8 +7,7 @@ export default function PublicRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen 
-      bg-appBg dark:bg-[#020617]">
+      <div className="flex items-center justify-center min-h-screen bg-[#020617]">
         <PageLoader />
       </div>
     );

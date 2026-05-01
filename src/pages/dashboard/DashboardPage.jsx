@@ -73,8 +73,8 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <MainLayout>
-        <div className="rounded-xl border border-gray-200 bg-card p-6 shadow-soft">
-          <p className="text-sm text-textSecondary">Loading dashboard...</p>
+        <div className="rounded-xl border border-white/10 bg-[#0f172a] p-6">
+          <p className="text-sm text-gray-400">Loading dashboard...</p>
         </div>
       </MainLayout>
     );
@@ -83,7 +83,7 @@ export default function DashboardPage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl bg-gradient-to-r from-primary to-secondary p-6 text-white shadow-soft">
+        <section className="rounded-xl bg-[#0f172a] border border-white/10 p-6 text-white shadow-soft">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-sm font-medium text-blue-100">Welcome back</p>
@@ -99,13 +99,29 @@ export default function DashboardPage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 to="/interviews"
-                className="rounded-xl bg-white px-4 py-3 text-sm font-medium text-primary transition-all duration-200 hover:bg-blue-50"
+                className="
+                rounded-xl 
+                bg-gradient-to-r from-blue-600 to-blue-500 
+                px-4 py-3 
+                text-sm font-medium text-white 
+                transition-all duration-200 
+                hover:scale-105 
+                hover:shadow-blue-500/30
+                "
               >
                 Start Interview
               </Link>
               <Link
                 to="/skill-gap"
-                className="rounded-xl border border-white/40 px-4 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-white/10"
+                className="
+                rounded-xl 
+                border border-white/20 
+                px-4 py-3 
+                text-sm font-medium text-white 
+                transition-all duration-200 
+                hover:bg-white/10 
+                hover:border-blue-400
+                "
               >
                 Run Skill Gap
               </Link>
@@ -114,7 +130,7 @@ export default function DashboardPage() {
         </section>
 
         {error ? (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-danger">
+          <div className="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
             {error}
           </div>
         ) : null}
@@ -154,16 +170,16 @@ export default function DashboardPage() {
             {dashboard?.scoreTrend?.length ? (
               <ResponsiveContainer width="100%" height={280}>
                 <LineChart data={dashboard.scoreTrend}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
 
                   <XAxis
                     dataKey="date"
-                    tick={{ fontSize: 12, fill: "#6B7280" }}
+                    tick={{ fontSize: 12, fill: "#9CA3AF" }}
                   />
 
                   <YAxis
                     domain={[0, 100]}
-                    tick={{ fontSize: 12, fill: "#6B7280" }}
+                    tick={{ fontSize: 12, fill: "#9CA3AF" }}
                   />
 
                   <Tooltip
@@ -199,7 +215,7 @@ export default function DashboardPage() {
             {dashboard?.weakAreaStats?.length ? (
               <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={dashboard.weakAreaStats}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
 
                   <XAxis
                     dataKey="topic"
@@ -207,7 +223,7 @@ export default function DashboardPage() {
                     angle={-25}
                     textAnchor="end"
                     height={70}
-                    tick={{ fontSize: 11, fill: "#6B7280" }}
+                    tick={{ fontSize: 11, fill: "#9CA3AF" }}
                     tickFormatter={(value) =>
                       value.length > 14 ? value.slice(0, 14) + "..." : value
                     }
@@ -215,14 +231,15 @@ export default function DashboardPage() {
 
                   <YAxis
                     allowDecimals={false}
-                    tick={{ fontSize: 12, fill: "#6B7280" }}
+                    tick={{ fontSize: 12, fill: "#9CA3AF" }}
                   />
 
                   <Tooltip
                     contentStyle={{
+                      backgroundColor: "#0f172a",
+                      border: "1px solid rgba(255,255,255,0.1)",
                       borderRadius: "10px",
-                      border: "none",
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                      color: "#fff",
                     }}
                   />
 
@@ -258,13 +275,21 @@ export default function DashboardPage() {
                 {dashboard.recommendations.slice(0, 5).map((item) => (
                   <div
                     key={item.id}
-                    className="rounded-xl border border-gray-200 bg-white p-4 transition-all duration-200 hover:bg-blue-50/40"
+                    className="
+                    rounded-xl 
+                    border border-white/10 
+                    bg-[#0f172a] 
+                    p-4 
+                    transition-all duration-200 
+                    hover:bg-white/5 
+                    hover:shadow-blue-500/20
+                    "
                   >
                     <Badge variant="primary">{item.type}</Badge>
-                    <h3 className="mt-3 text-sm font-semibold text-textPrimary">
+                    <h3 className="mt-3 text-sm font-semibold text-white">
                       {item.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-6 text-textSecondary">
+                    <p className="mt-2 text-sm leading-6 text-gray-400">
                       {item.content}
                     </p>
                   </div>
@@ -283,9 +308,10 @@ export default function DashboardPage() {
             subtitle="Click any session to review answers and evaluations"
           >
             {dashboard?.recentScoreHistory?.length ? (
-              <div className="overflow-hidden rounded-xl bg-card shadow-soft">
+              <div className="overflow-hidden rounded-xl bg-[#0f172a] border border-white/10">
                 <table className="min-w-full text-sm">
-                  <thead className="bg-appBg text-left text-textSecondary">
+                  
+                  <thead className="bg-[#020617] text-left text-gray-400">
                     <tr>
                       <th className="px-4 py-3 font-medium">Role</th>
                       <th className="px-4 py-3 font-medium">Score</th>
@@ -298,12 +324,10 @@ export default function DashboardPage() {
                     {dashboard.recentScoreHistory.map((item) => (
                       <tr
                         key={item.sessionId}
-                        onClick={() =>
-                          navigate(`/interviews/${item.sessionId}`)
-                        }
-                        className="cursor-pointer transition-all duration-200 hover:bg-appBg"
+                        onClick={() => navigate(`/interviews/${item.sessionId}`)}
+                        className="cursor-pointer transition hover:bg-white/5"
                       >
-                        <td className="px-4 py-3 font-medium text-textPrimary">
+                        <td className="px-4 py-3 font-medium text-white">
                           {item.targetRole}
                         </td>
 
@@ -311,11 +335,11 @@ export default function DashboardPage() {
                           <ScorePill score={item.averageScore} />
                         </td>
 
-                        <td className="px-4 py-3 text-textSecondary">
+                        <td className="px-4 py-3 text-gray-400">
                           {item.totalQuestions}
                         </td>
 
-                        <td className="px-4 py-3 text-textSecondary">
+                        <td className="px-4 py-3 text-gray-400">
                           {formatDate(item.createdAt)}
                         </td>
                       </tr>

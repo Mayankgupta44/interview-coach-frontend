@@ -85,7 +85,7 @@ export default function LoginPage() {
         />
 
         {serverError ? (
-          <p className="text-sm text-danger">{serverError}</p>
+          <p className="text-sm text-red-400">{serverError}</p>
         ) : null}
 
         <Button type="submit" disabled={submitting} className="w-full">
@@ -93,9 +93,9 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <p className="mt-6 text-sm text-textSecondary">
+      <p className="mt-6 text-sm text-gray-400">
         Don&apos;t have an account?{" "}
-        <Link to="/register" className="font-medium text-primary hover:underline">
+        <Link to="/register" className="font-medium text-blue-400 hover:underline">
           Register
         </Link>
       </p>

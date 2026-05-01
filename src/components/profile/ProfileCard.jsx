@@ -15,41 +15,36 @@ function getProfileImageUrl(profileImageUrl) {
 
 export default function ProfileCard({ profile }) {
   const imageUrl = getProfileImageUrl(profile?.profileImageUrl);
-
   return (
-    <div className="rounded-xl 
-    bg-white
-    dark:bg-[rgba(15,23,42,0.7)] 
-    p-6 
-    shadow-soft dark:shadow-blue-500/10 
-    border border-gray-200
-    hover:shadow-blue-500/20 transition">
+    <div
+      className="
+      rounded-xl 
+      bg-[#0f172a]
+      border border-white/10
+      p-6 
+      shadow-sm
+      hover:shadow-blue-500/20 
+      transition
+    "
+    >
       <div className="flex flex-col items-center text-center">
-        <Avatar
-          name={profile?.fullName}
-          imageUrl={imageUrl}
-          size="xl"
-        />
+        <Avatar name={profile?.fullName} imageUrl={imageUrl} size="xl" />
 
-        <h2 className="mt-4 text-lg font-semibold text-textPrimary dark:text-white">
+        <h2 className="mt-4 text-lg font-semibold text-white">
           {profile?.fullName}
         </h2>
 
-        <p className="mt-1 text-sm text-textSecondary dark:text-gray-300">
+        <p className="mt-1 text-sm text-gray-400">
           {profile?.targetRole || "No role set"}
         </p>
 
         {profile?.location && (
-          <p className="mt-1 text-xs text-textSecondary dark:text-gray-300">
-            📍 {profile.location}
-          </p>
+          <p className="mt-1 text-xs text-gray-400">📍 {profile.location}</p>
         )}
       </div>
 
       {profile?.bio && (
-        <p className="mt-4 text-center text-sm text-textSecondary dark:text-gray-300">
-          {profile.bio}
-        </p>
+        <p className="mt-4 text-center text-sm text-gray-400">{profile.bio}</p>
       )}
 
       <div className="mt-5 flex flex-wrap justify-center gap-3">
@@ -58,7 +53,7 @@ export default function ProfileCard({ profile }) {
             href={profile.linkedInUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-sm text-primary hover:underline dark:text-blue-400"
+            className="text-sm text-blue-400 hover:underline"
           >
             LinkedIn
           </a>
@@ -69,7 +64,7 @@ export default function ProfileCard({ profile }) {
             href={profile.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-sm text-primary hover:underline dark:text-blue-400"
+            className="text-sm text-blue-400 hover:underline"
           >
             GitHub
           </a>
@@ -80,7 +75,7 @@ export default function ProfileCard({ profile }) {
             href={profile.portfolioUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-sm text-primary hover:underline dark:text-blue-400"
+            className="text-sm text-blue-400 hover:underline"
           >
             Portfolio
           </a>

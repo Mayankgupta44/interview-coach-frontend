@@ -7,34 +7,29 @@ export default function Button({
   variant = "primary",
   ...props
 }) {
-
   const variants = {
     primary: `
-      bg-gradient-to-r from-blue-600 to-blue-400 
+      bg-gradient-to-r from-blue-600 to-blue-500 
       text-white 
-      hover:shadow-blue-500/40 
-      hover:scale-105
+      hover:scale-105 
+      hover:shadow-blue-500/30
     `,
-
     secondary: `
-      bg-card dark:bg-white/5 
-      text-primary dark:text-blue-400 
-      border border-gray-200 dark:border-white/10 
-      hover:bg-secondary/10 
-      hover:shadow-blue-500/20
+      bg-[#020617] 
+      text-blue-400 
+      border border-white/10 
+      hover:bg-white/10
     `,
-
     danger: `
-      bg-danger text-white 
-      hover:bg-danger/90 
-      hover:shadow-red-500/30
+      bg-red-500 
+      text-white 
+      hover:bg-red-500/90
     `,
-
     ghost: `
       bg-transparent 
-      text-textSecondary dark:text-gray-300 
-      hover:bg-secondary/10 
-      hover:text-primary dark:hover:text-blue-400
+      text-gray-400 
+      hover:bg-white/10 
+      hover:text-white
     `,
   };
 
@@ -45,12 +40,8 @@ export default function Button({
       className={`inline-flex w-full items-center justify-center 
       rounded-xl px-4 py-3 text-sm font-medium 
       transition-all duration-200 
-      focus:outline-none focus:ring-secondary/30 dark:focus:ring-blue-500/30 
-      disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-white/10 
-      shadow-soft dark:shadow-blue-500/10 
-      ${
-        variants[variant] || variants.primary
-      } ${className}`}
+      disabled:cursor-not-allowed disabled:bg-[#020617]/60 
+      ${variants[variant]} ${className}`}
       {...props}
     >
       {loading ? "Please wait..." : children}

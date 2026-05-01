@@ -8,17 +8,13 @@ export default function ResumeUploadCard({
   uploadInfo,
 }) {
   return (
-    <div
-      className="rounded-xl bg-appBg dark:bg-white/5 backdrop-blur-md p-5 
-      shadow-soft dark:shadow-blue-500/10"
-    >
-      <h3 className="text-sm font-semibold text-textPrimary dark:text-white">
+    <div className="rounded-xl bg-[#0f172a] border border-white/10 p-5 shadow-sm">
+      <h3 className="text-sm font-semibold text-white">
         Upload PDF Resume
       </h3>
 
-      <p className="mt-1 text-sm text-textSecondary dark:text-gray-300">
-        Upload a PDF resume. Text will be extracted automatically and shown
-        below.
+      <p className="mt-1 text-sm text-gray-400">
+        Upload a PDF resume. Text will be extracted automatically and shown below.
       </p>
 
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -26,10 +22,7 @@ export default function ResumeUploadCard({
           type="file"
           accept="application/pdf,.pdf"
           onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
-          className="block w-full rounded-xl bg-card dark:bg-white/5 
-          px-4 py-3 text-sm text-textSecondary dark:text-gray-300 
-          shadow-inner cursor-pointer 
-          border border-transparent dark:border-white/10"
+          className="block w-full rounded-xl bg-[#020617] px-4 py-3 text-sm text-gray-400 border border-white/10 cursor-pointer"
         />
 
         <Button
@@ -43,15 +36,14 @@ export default function ResumeUploadCard({
       </div>
 
       {uploadInfo && (
-        <div className="mt-4 rounded-xl bg-card dark:bg-[rgba(15,23,42,0.7)] 
-        p-4 shadow-soft dark:shadow-blue-500/10">
-          <p className="text-sm font-medium text-textPrimary dark:text-white">
+        <div className="mt-4 rounded-xl bg-[#020617] p-4 border border-white/10">
+          <p className="text-sm font-medium text-white">
             {uploadInfo.originalFileName}
           </p>
 
           <p
             className={`mt-1 text-xs ${
-              uploadInfo.extractionSuccess ? "text-success dark:text-green-400" : "text-danger dark:text-red-400"
+              uploadInfo.extractionSuccess ? "text-green-400" : "text-red-400"
             }`}
           >
             {uploadInfo.extractionSuccess
@@ -60,7 +52,7 @@ export default function ResumeUploadCard({
           </p>
 
           {uploadInfo.extractionError && (
-            <p className="mt-2 text-sm text-danger dark:text-red-400">
+            <p className="mt-2 text-sm text-red-400">
               {uploadInfo.extractionError}
             </p>
           )}

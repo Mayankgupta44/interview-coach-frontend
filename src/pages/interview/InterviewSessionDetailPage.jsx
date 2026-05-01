@@ -62,7 +62,7 @@ export default function InterviewSessionDetailPage() {
       setAnswers(answersData || []);
     } catch (err) {
       setError(
-        err?.response?.data?.message || "Failed to load interview session."
+        err?.response?.data?.message || "Failed to load interview session.",
       );
     } finally {
       setLoading(false);
@@ -77,7 +77,7 @@ export default function InterviewSessionDetailPage() {
       if (attempts?.length) {
         const comparison = await getLatestAttemptComparison(
           sessionId,
-          questionId
+          questionId,
         );
         setComparisonMap((prev) => ({ ...prev, [questionId]: comparison }));
       }
@@ -116,7 +116,7 @@ export default function InterviewSessionDetailPage() {
       setAnswers((prev) => {
         const filtered = prev.filter((item) => item.questionId !== questionId);
         return [...filtered, savedAnswer].sort(
-          (a, b) => a.questionOrder - b.questionOrder
+          (a, b) => a.questionOrder - b.questionOrder,
         );
       });
 
@@ -159,7 +159,7 @@ export default function InterviewSessionDetailPage() {
     return (
       <MainLayout>
         <SectionCard title="Interview Session">
-          <p className="text-sm text-textSecondary">Loading session...</p>
+          <p className="text-sm text-gray-400">Loading session...</p>
         </SectionCard>
       </MainLayout>
     );
@@ -168,7 +168,7 @@ export default function InterviewSessionDetailPage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl bg-gradient-to-r from-primary to-secondary p-6 text-white shadow-soft">
+        <section className="rounded-xl bg-[#0f172a] border border-white/10 p-6 text-white shadow-soft">
           <Link
             to="/interviews"
             className="text-sm font-medium text-blue-100 hover:text-white"
@@ -204,7 +204,7 @@ export default function InterviewSessionDetailPage() {
         </section>
 
         {error ? (
-          <div className="rounded-xl bg-danger/10 text-danger px-4 py-3 text-sm">
+          <div className="rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 px-4 py-3 text-sm">
             {error}
           </div>
         ) : null}
@@ -219,18 +219,19 @@ export default function InterviewSessionDetailPage() {
             return (
               <section
                 key={question.id}
-                className="rounded-xl bg-card p-6 shadow-soft 
-                border border-gray-200"
+                className="rounded-xl bg-[#0f172a] border border-white/10 shadow-sm"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
+                  <div className="px-6 pt-6 pb-4">
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="primary">
                         Question {question.questionOrder}
                       </Badge>
-                      {question.questionType === "FOLLOW_UP" ? (
+
+                      {question.questionType === "FOLLOW_UP" && (
                         <Badge variant="warning">Follow-up</Badge>
-                      ) : null}
+                      )}
+
                       {isAnswered ? (
                         <Badge variant="success">Answered</Badge>
                       ) : (
@@ -238,7 +239,7 @@ export default function InterviewSessionDetailPage() {
                       )}
                     </div>
 
-                    <h2 className="mt-4 text-lg font-semibold leading-7 text-textPrimary">
+                    <h2 className="mt-4 text-lg font-semibold leading-7 text-white break-words">
                       {question.questionText}
                     </h2>
                   </div>
@@ -258,8 +259,9 @@ export default function InterviewSessionDetailPage() {
                       placeholder="Write your answer here..."
                     />
 
-                    <div className="max-w-xs">
+                    <div className="mt-2 pl-2 sm:pl-4">
                       <Button
+                        className="w-xs px-6 pb-2 mb-3"
                         onClick={() => handleSubmitAnswer(question.id)}
                         loading={submittingMap[question.id]}
                       >
@@ -270,13 +272,15 @@ export default function InterviewSessionDetailPage() {
                 ) : (
                   <div className="mt-6 space-y-6">
                     <SectionBlock title="Your Answer">
-                      <p className="whitespace-pre-line text-sm leading-6 text-textSecondary">
+                      <p className="whitespace-pre-line break-words text-sm leading-6 text-gray-400">
                         {submittedAnswer.answerText}
                       </p>
                     </SectionBlock>
 
                     <SectionBlock title="Evaluation">
-                      <EvaluationPanel evaluation={submittedAnswer.evaluation} />
+                      <EvaluationPanel
+                        evaluation={submittedAnswer.evaluation}
+                      />
                     </SectionBlock>
 
                     <RetryPanel
@@ -307,20 +311,19 @@ export default function InterviewSessionDetailPage() {
 
 function ProgressCard({ label, value }) {
   return (
-    <div className="rounded-xl bg-card p-5 shadow-soft 
-    border border-gray-200">
-      <p className="text-sm text-textSecondary">{label}</p>
-      <h3 className="mt-2 text-3xl font-bold text-textPrimary">{value}</h3>
+    <div className="rounded-xl bg-[#0f172a] border border-white/10 p-4">
+      <p className="text-sm text-gray-400">{label}</p>
+      <h3 className="mt-2 text-3xl font-bold text-white">{value}</h3>
     </div>
   );
 }
 
 function SectionBlock({ title, children }) {
   return (
-    <div className="rounded-xl bg-appBg p-5 
-    border border-gray-200">
-      <h3 className="mb-4 text-sm font-semibold text-textPrimary">{title}</h3>
-      {children}
+    <div className="rounded-xl bg-[#020617] border border-white/10 p-5">
+      <h3 className="mb-3 text-sm font-semibold text-white">{title}</h3>
+
+      <div className="text-sm text-gray-400 leading-6">{children}</div>
     </div>
   );
 }

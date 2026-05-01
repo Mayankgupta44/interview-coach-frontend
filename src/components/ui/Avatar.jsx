@@ -11,12 +11,13 @@ export default function Avatar({ name = "", imageUrl = "", size = "md" }) {
   return (
     <div
       className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full 
-      bg-primary font-semibold text-white 
-      ring-2 ring-secondary/20 
-      dark:ring-blue-500/30 
-      shadow-sm dark:shadow-blue-500/20 hover:scale-105 transition ${
-        sizes[size] || sizes.md
-      }`}
+      bg-blue-500/20 
+      text-blue-400 
+      font-semibold 
+      ring-2 ring-blue-500/30
+      hover:scale-105 
+      transition 
+      ${sizes[size] || sizes.md}`}
     >
       {imageUrl ? (
         <img

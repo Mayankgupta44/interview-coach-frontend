@@ -173,11 +173,9 @@ export default function ProfilePage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl bg-white
-        p-6 shadow-soft 
-        border border-gray-200">
-          <h1 className="text-2xl font-bold text-textPrimary">Profile</h1>
-          <p className="mt-2 text-sm text-textSecondary">
+        <section className="rounded-xl bg-[#0f172a] p-6 border border-white/10">
+          <h1 className="text-2xl font-bold text-white">Profile</h1>
+          <p className="mt-2 text-sm text-gray-400">
             Manage your personal details, role preference, skills, and social
             links.
           </p>
@@ -190,10 +188,8 @@ export default function ProfilePage() {
         ) : null}
 
         {loading ? (
-          <div className="rounded-xl bg-white
-          p-6 shadow-soft 
-          border border-gray-200">
-            <p className="text-sm text-textSecondary">Loading profile...</p>
+          <div className="rounded-xl bg-[#0f172a] p-6 border border-white/10">
+            <p className="text-sm text-gray-400">Loading profile...</p>
           </div>
         ) : (
           <div className="grid gap-6 lg:grid-cols-3">
@@ -204,11 +200,13 @@ export default function ProfilePage() {
             <div className="lg:col-span-2 opacity-100">
               <form
                 onSubmit={handleSubmit}
-                className="rounded-xl bg-white 
-                p-6 shadow-soft 
-                border border-gray-200"
+                className="rounded-xl 
+                bg-[#0f172a] 
+                p-6 
+                border border-white/10
+                shadow-sm"
               >
-                <h2 className="text-lg font-semibold text-textPrimary">
+                <h2 className="text-lg font-semibold text-white">
                   Edit Profile
                 </h2>
 
@@ -229,17 +227,14 @@ export default function ProfilePage() {
                   />
 
                   <div className="space-y-1">
-                    <label className="block text-sm font-medium text-textPrimary">
+                    <label className="block text-sm font-medium text-white">
                       Experience Level
                     </label>
                     <select
                       name="experienceLevel"
                       value={formData.experienceLevel}
                       onChange={handleChange}
-                      className="w-full rounded-xl bg-white 
-                      border border-gray-300 dark:border-white/10
-                      px-4 py-3 text-sm outline-none 
-                      focus:ring-2 focus:ring-secondary/30"                    >
+                      className="w-full rounded-xl bg-[#020617] border border-white/10 text-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/30"                >
                       {experienceOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
@@ -256,7 +251,7 @@ export default function ProfilePage() {
                   />
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-textPrimary">
+                    <label className="block text-sm font-medium text-white">
                       Profile Image
                     </label>
 
@@ -275,17 +270,13 @@ export default function ProfilePage() {
                       {/* Custom Button */}
                       <label
                         htmlFor="profileImage"
-                        className="cursor-pointer rounded-xl bg-appBg 
-                        border border-gray-200 
-                        px-4 py-2 text-sm font-medium text-textPrimary 
-                        hover:bg-gray-100"                      >
+                        className="cursor-pointer rounded-xl bg-[#020617] border border-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition"                     >
                         Choose File
                       </label>
 
                       {/* Selected File UI */}
                       {profileImageFile && (
-                        <span className="text-sm px-3 py-1 rounded-md bg-primary/10 text-primary font-medium">
-                          {profileImageFile.name}
+                        <span className="text-sm px-3 py-1 rounded-md bg-blue-500/10 text-blue-400 font-medium">                          {profileImageFile.name}
                         </span>
                       )}
                     </div>
@@ -295,8 +286,7 @@ export default function ProfilePage() {
                       type="button"
                       onClick={handleUploadProfileImage}
                       disabled={!profileImageFile || uploadingImage}
-                      className="rounded-xl bg-primary/10 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/20"
-                    >
+                      className="rounded-xl px-4 py-2 text-sm font-medium bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition"                    >
                       {uploadingImage ? "Uploading..." : "Upload Image"}
                     </button>
                   </div>
@@ -355,7 +345,7 @@ export default function ProfilePage() {
                 </div>
 
                 {successMessage && (
-                  <p className="mt-4 text-sm text-success">{successMessage}</p>
+                  <p className="mt-4 text-sm text-green-400">{successMessage}</p>
                 )}
               </form>
             </div>

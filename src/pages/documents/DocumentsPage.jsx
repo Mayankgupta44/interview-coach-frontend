@@ -138,7 +138,7 @@ export default function DocumentsPage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl bg-gradient-to-r from-primary to-secondary p-6 text-white shadow-soft">
+        <section className="rounded-xl bg-[#0f172a] border border-white/10 p-6 text-white shadow-sm">
           <h1 className="text-2xl font-bold">Resume & Job Description</h1>
           <p className="mt-2 max-w-2xl text-sm text-blue-100">
             Upload your resume, extract text, edit it if needed, and save the
@@ -147,14 +147,14 @@ export default function DocumentsPage() {
         </section>
 
         {error ? (
-          <div className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+          <div className="rounded-xl px-4 py-3 text-sm bg-red-500/10 text-red-400 border border-red-500/20">
             {error}
           </div>
         ) : null}
 
         {loading ? (
           <SectionCard title="Documents">
-            <p className="text-sm text-textSecondary">Loading documents...</p>
+            <p className="text-sm text-gray-400">Loading documents...</p>
           </SectionCard>
         ) : (
           <div className="grid gap-6 xl:grid-cols-2 items-stretch">
@@ -186,18 +186,18 @@ export default function DocumentsPage() {
                 />
 
                 {resumeText ? (
-                  <div className="max-h-40 overflow-y-auto rounded-xl bg-appBg/70 p-4">
-                    <p className="text-xs font-semibold uppercase text-textSecondary">
+                  <div className="max-h-40 overflow-y-auto rounded-xl bg-[#020617] border border-white/10 p-4">
+                    <p className="text-xs font-semibold uppercase text-gray-400">
                       Preview
                     </p>
-                    <p className="mt-2 whitespace-pre-line text-sm leading-6 text-textSecondary">
+                    <p className="mt-2 whitespace-pre-line text-sm leading-6 text-gray-300">
                       {resumeText}
                     </p>
                   </div>
                 ) : null}
 
                 {resumeMessage ? (
-                  <p className="text-sm text-success">{resumeMessage}</p>
+                  <p className="text-sm text-green-400">{resumeMessage}</p>
                 ) : null}
 
                 <div className="mt-auto">
@@ -228,7 +228,7 @@ export default function DocumentsPage() {
                 />
 
                 {jdMessage ? (
-                  <p className="text-sm text-success">{jdMessage}</p>
+                  <p className="text-sm text-green-400">{jdMessage}</p>
                 ) : null}
 
                 <div className="mt-auto">

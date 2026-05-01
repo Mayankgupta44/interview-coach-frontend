@@ -52,7 +52,7 @@ export default function SkillGapPage() {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <section className="rounded-xl bg-gradient-to-r from-primary to-secondary p-6 text-white shadow-soft">
+        <section className="rounded-xl bg-gradient-to-r from-blue-600 to-blue-400 p-6 text-white shadow-soft">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h1 className="text-2xl font-bold">Skill Gap Analysis</h1>
@@ -63,7 +63,7 @@ export default function SkillGapPage() {
             </div>
 
             <Button
-              className="w-full border border-white/30 bg-white/10 text-white backdrop-blur-md hover:bg-white/20 lg:w-auto"
+              className="w-full border border-white/30 bg-blue-500/20 text-white hover:bg-blue-500/30 backdrop-blur-md lg:w-auto"
               onClick={handleAnalyze}
               loading={analyzing}
             >
@@ -76,8 +76,8 @@ export default function SkillGapPage() {
           <div
             className={`rounded-xl px-4 py-3 text-sm ${
               report
-                ? "bg-warning/10 text-warning text-warning"
-                : "bg-danger/10 text-danger text-danger"
+                ? "bg-warning/10 text-yellow-400"
+                : "bg-danger/10 text-red-400"
             }`}
           >
             {report
@@ -88,7 +88,7 @@ export default function SkillGapPage() {
 
         {loading ? (
           <SectionCard title="Skill Gap">
-            <p className="text-sm text-textSecondary">
+            <p className="text-sm text-gray-400">
               Loading latest report...
             </p>
           </SectionCard>
@@ -100,14 +100,14 @@ export default function SkillGapPage() {
               action={
                 <Link
                   to="/interviews"
-                  className="rounded-xl bg-primary px-4 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-secondary"
+                  className="rounded-xl px-4 py-3 text-sm font-medium text-white transition-all duration-200 bg-blue-600 hover:bg-blue-500"
                 >
                   Start Interview
                 </Link>
               }
             >
               <ProgressBar value={report.fitScore || 0} />
-              <p className="mt-4 text-sm leading-6 text-textSecondary">
+              <p className="mt-4 text-sm leading-6 text-gray-400">
                 {report.summary}
               </p>
             </SectionCard>
@@ -141,7 +141,7 @@ export default function SkillGapPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-textSecondary">
+                <p className="text-sm text-gray-400">
                   No recommended topics yet.
                 </p>
               )}
@@ -149,7 +149,7 @@ export default function SkillGapPage() {
           </>
         ) : (
           <SectionCard title="No report found">
-            <p className="text-sm text-textSecondary">
+            <p className="text-sm text-gray-400">
               Save your resume and job description, then run skill-gap analysis.
             </p>
             <div className="mt-4 max-w-xs">
@@ -176,7 +176,7 @@ function SkillListCard({ title, items = [], variant, emptyText }) {
           ))}
         </div>
       ) : (
-        <p className="text-sm text-textSecondary">{emptyText}</p>
+        <p className="text-sm text-gray-400">{emptyText}</p>
       )}
     </SectionCard>
   );
