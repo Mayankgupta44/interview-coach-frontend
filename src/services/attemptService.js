@@ -21,3 +21,12 @@ export async function getLatestAttemptComparison(sessionId, questionId) {
   );
   return response.data;
 }
+
+export async function submitAudioAttempt(sessionId, questionId, payload) {
+  const response = await api.post(
+    `/interviews/${sessionId}/questions/${questionId}/attempts/audio-transcript`,
+    payload
+  );
+
+  return response.data;
+}

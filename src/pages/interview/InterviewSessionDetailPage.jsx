@@ -1,23 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
-import Button from "../../components/ui/Button";
 import Badge from "../../components/ui/Badge";
 import SectionCard from "../../components/ui/SectionCard";
-import Textarea from "../../components/ui/Textarea";
-import EvaluationPanel from "../../components/interview/EvaluationPanel";
-import RetryPanel from "../../components/interview/RetryPanel";
-import AttemptHistory from "../../components/interview/AttemptHistory";
-import ImprovementComparison from "../../components/interview/ImprovementComparison";
+import QuestionReviewCard from "../../components/interview/QuestionReviewCard";
 import { getInterviewSessionById } from "../../services/interviewService";
 import {
   getAnswersBySessionId,
   submitAnswer,
+  submitAudioAnswer,
+  submitAudioTranscriptAnswer,
 } from "../../services/answerService";
 import {
   getAttempts,
   getLatestAttemptComparison,
   submitAttempt,
+  submitAudioAttempt,
 } from "../../services/attemptService";
 
 export default function InterviewSessionDetailPage() {
@@ -25,12 +23,10 @@ export default function InterviewSessionDetailPage() {
 
   const [session, setSession] = useState(null);
   const [answers, setAnswers] = useState([]);
-  const [answerInputs, setAnswerInputs] = useState({});
   const [submittingMap, setSubmittingMap] = useState({});
 
   const [attemptsMap, setAttemptsMap] = useState({});
   const [comparisonMap, setComparisonMap] = useState({});
-  const [improveInputs, setImproveInputs] = useState({});
   const [improvingMap, setImprovingMap] = useState({});
 
   const [loading, setLoading] = useState(true);
@@ -79,6 +75,7 @@ export default function InterviewSessionDetailPage() {
           sessionId,
           questionId,
         );
+
         setComparisonMap((prev) => ({ ...prev, [questionId]: comparison }));
       }
     } catch {
@@ -88,19 +85,19 @@ export default function InterviewSessionDetailPage() {
 
   const answerMap = useMemo(() => {
     const map = {};
+
     for (const item of answers) {
       map[item.questionId] = item;
     }
+
     return map;
   }, [answers]);
 
   const completedCount = answers.length;
   const totalQuestions = session?.questions?.length || 0;
 
-  async function handleSubmitAnswer(questionId) {
-    const answerText = answerInputs[questionId]?.trim();
-
-    if (!answerText) {
+  async function handleSubmitTextAnswer(questionId, answerText) {
+    if (!answerText?.trim()) {
       setError("Please write an answer before submitting.");
       return;
     }
@@ -110,7 +107,7 @@ export default function InterviewSessionDetailPage() {
       setSubmittingMap((prev) => ({ ...prev, [questionId]: true }));
 
       const savedAnswer = await submitAnswer(sessionId, questionId, {
-        answerText,
+        answerText: answerText.trim(),
       });
 
       setAnswers((prev) => {
@@ -120,7 +117,6 @@ export default function InterviewSessionDetailPage() {
         );
       });
 
-      setAnswerInputs((prev) => ({ ...prev, [questionId]: "" }));
       await loadAttemptsForQuestion(questionId);
 
       const updatedSession = await getInterviewSessionById(sessionId);
@@ -132,10 +128,47 @@ export default function InterviewSessionDetailPage() {
     }
   }
 
-  async function handleImproveAnswer(questionId) {
-    const answerText = improveInputs[questionId]?.trim();
+  async function handleSubmitAudioAnswer(questionId, payload) {
+    if (!payload?.transcriptText?.trim()) {
+      setError("Transcript is required before submitting.");
+      return;
+    }
 
-    if (!answerText) {
+    try {
+      setError("");
+      setSubmittingMap((prev) => ({ ...prev, [questionId]: true }));
+
+      const savedAnswer = await submitAudioTranscriptAnswer(
+        sessionId,
+        questionId,
+        {
+          transcriptText: payload.transcriptText.trim(),
+          audioUrl: payload.audioUrl,
+        },
+      );
+
+      setAnswers((prev) => {
+        const filtered = prev.filter((item) => item.questionId !== questionId);
+        return [...filtered, savedAnswer].sort(
+          (a, b) => a.questionOrder - b.questionOrder,
+        );
+      });
+
+      await loadAttemptsForQuestion(questionId);
+
+      const updatedSession = await getInterviewSessionById(sessionId);
+      setSession(updatedSession);
+    } catch (err) {
+      setError(
+        err?.response?.data?.message || "Audio answer submission failed.",
+      );
+    } finally {
+      setSubmittingMap((prev) => ({ ...prev, [questionId]: false }));
+    }
+  }
+
+  async function handleSubmitTextAttempt(questionId, answerText) {
+    if (!answerText?.trim()) {
       setError("Please write an improved answer before submitting.");
       return;
     }
@@ -144,12 +177,36 @@ export default function InterviewSessionDetailPage() {
       setError("");
       setImprovingMap((prev) => ({ ...prev, [questionId]: true }));
 
-      await submitAttempt(sessionId, questionId, { answerText });
+      await submitAttempt(sessionId, questionId, {
+        answerText: answerText.trim(),
+      });
 
-      setImproveInputs((prev) => ({ ...prev, [questionId]: "" }));
       await loadAttemptsForQuestion(questionId);
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to improve answer.");
+    } finally {
+      setImprovingMap((prev) => ({ ...prev, [questionId]: false }));
+    }
+  }
+
+  async function handleSubmitAudioAttempt(questionId, payload) {
+    if (!payload?.transcriptText?.trim()) {
+      setError("Transcript is required before submitting improved answer.");
+      return;
+    }
+
+    try {
+      setError("");
+      setImprovingMap((prev) => ({ ...prev, [questionId]: true }));
+
+      await submitAudioAttempt(sessionId, questionId, {
+        transcriptText: payload.transcriptText.trim(),
+        audioUrl: payload.audioUrl,
+      });
+
+      await loadAttemptsForQuestion(questionId);
+    } catch (err) {
+      setError(err?.response?.data?.message || "Audio re-evaluation failed.");
     } finally {
       setImprovingMap((prev) => ({ ...prev, [questionId]: false }));
     }
@@ -181,8 +238,10 @@ export default function InterviewSessionDetailPage() {
               <h1 className="text-2xl font-bold">
                 {session?.targetRole} Interview
               </h1>
+
               <p className="mt-2 text-sm text-blue-100">
-                {session?.interviewType} • {session?.totalQuestions} questions
+                {session?.interviewType} • {session?.difficultyLevel} •{" "}
+                {session?.totalQuestions} questions
               </p>
             </div>
 
@@ -210,99 +269,21 @@ export default function InterviewSessionDetailPage() {
         ) : null}
 
         <div className="space-y-6">
-          {session?.questions?.map((question) => {
-            const submittedAnswer = answerMap[question.id];
-            const isAnswered = Boolean(submittedAnswer);
-            const attempts = attemptsMap[question.id] || [];
-            const comparison = comparisonMap[question.id];
-
-            return (
-              <section
-                key={question.id}
-                className="rounded-xl bg-[#0f172a] border border-white/10 shadow-sm"
-              >
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="px-6 pt-6 pb-4">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant="primary">
-                        Question {question.questionOrder}
-                      </Badge>
-
-                      {question.questionType === "FOLLOW_UP" && (
-                        <Badge variant="warning">Follow-up</Badge>
-                      )}
-
-                      {isAnswered ? (
-                        <Badge variant="success">Answered</Badge>
-                      ) : (
-                        <Badge variant="warning">Pending</Badge>
-                      )}
-                    </div>
-
-                    <h2 className="mt-4 text-lg font-semibold leading-7 text-white break-words">
-                      {question.questionText}
-                    </h2>
-                  </div>
-                </div>
-
-                {!isAnswered ? (
-                  <div className="mt-6 space-y-4">
-                    <Textarea
-                      value={answerInputs[question.id] || ""}
-                      onChange={(e) =>
-                        setAnswerInputs((prev) => ({
-                          ...prev,
-                          [question.id]: e.target.value,
-                        }))
-                      }
-                      rows={6}
-                      placeholder="Write your answer here..."
-                    />
-
-                    <div className="mt-2 pl-2 sm:pl-4">
-                      <Button
-                        className="w-xs px-6 pb-2 mb-3"
-                        onClick={() => handleSubmitAnswer(question.id)}
-                        loading={submittingMap[question.id]}
-                      >
-                        Submit Answer
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mt-6 space-y-6">
-                    <SectionBlock title="Your Answer">
-                      <p className="whitespace-pre-line break-words text-sm leading-6 text-gray-400">
-                        {submittedAnswer.answerText}
-                      </p>
-                    </SectionBlock>
-
-                    <SectionBlock title="Evaluation">
-                      <EvaluationPanel
-                        evaluation={submittedAnswer.evaluation}
-                      />
-                    </SectionBlock>
-
-                    <RetryPanel
-                      value={improveInputs[question.id] || ""}
-                      onChange={(value) =>
-                        setImproveInputs((prev) => ({
-                          ...prev,
-                          [question.id]: value,
-                        }))
-                      }
-                      onSubmit={() => handleImproveAnswer(question.id)}
-                      loading={improvingMap[question.id]}
-                    />
-
-                    <ImprovementComparison comparison={comparison} />
-
-                    <AttemptHistory attempts={attempts} />
-                  </div>
-                )}
-              </section>
-            );
-          })}
+          {session?.questions?.map((question) => (
+            <QuestionReviewCard
+              key={question.id}
+              question={question}
+              submittedAnswer={answerMap[question.id]}
+              attempts={attemptsMap[question.id] || []}
+              comparison={comparisonMap[question.id]}
+              submitting={submittingMap[question.id]}
+              improving={improvingMap[question.id]}
+              onSubmitTextAnswer={handleSubmitTextAnswer}
+              onSubmitAudioAnswer={handleSubmitAudioAnswer}
+              onSubmitTextAttempt={handleSubmitTextAttempt}
+              onSubmitAudioAttempt={handleSubmitAudioAttempt}
+            />
+          ))}
         </div>
       </div>
     </MainLayout>
@@ -314,16 +295,6 @@ function ProgressCard({ label, value }) {
     <div className="rounded-xl bg-[#0f172a] border border-white/10 p-4">
       <p className="text-sm text-gray-400">{label}</p>
       <h3 className="mt-2 text-3xl font-bold text-white">{value}</h3>
-    </div>
-  );
-}
-
-function SectionBlock({ title, children }) {
-  return (
-    <div className="rounded-xl bg-[#020617] border border-white/10 p-5">
-      <h3 className="mb-3 text-sm font-semibold text-white">{title}</h3>
-
-      <div className="text-sm text-gray-400 leading-6">{children}</div>
     </div>
   );
 }

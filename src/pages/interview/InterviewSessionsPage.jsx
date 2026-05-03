@@ -18,6 +18,13 @@ const interviewTypeOptions = [
   { label: "Mixed", value: "MIXED" },
 ];
 
+const difficultyOptions = [
+  { label: "Fresher", value: "FRESHER" },
+  { label: "Junior", value: "JUNIOR" },
+  { label: "Intermediate", value: "INTERMEDIATE" },
+  { label: "Advanced", value: "ADVANCED" },
+];
+
 export default function InterviewSessionsPage() {
   const navigate = useNavigate();
 
@@ -29,6 +36,8 @@ export default function InterviewSessionsPage() {
   const [formData, setFormData] = useState({
     targetRole: "Java Developer",
     interviewType: "TECHNICAL",
+    difficultyLevel: "FRESHER",
+    questionStyle: "SINGLE_FOCUSED",
     questionCount: 5,
   });
 
@@ -44,7 +53,7 @@ export default function InterviewSessionsPage() {
       setSessions(data || []);
     } catch (err) {
       setError(
-        err?.response?.data?.message || "Failed to load interview sessions."
+        err?.response?.data?.message || "Failed to load interview sessions.",
       );
     } finally {
       setLoading(false);
@@ -69,8 +78,7 @@ export default function InterviewSessionsPage() {
       navigate(`/interviews/${data.id}`);
     } catch (err) {
       setError(
-        err?.response?.data?.message ||
-          "Failed to create interview session."
+        err?.response?.data?.message || "Failed to create interview session.",
       );
     } finally {
       setCreating(false);
@@ -81,12 +89,11 @@ export default function InterviewSessionsPage() {
     <MainLayout>
       <div className="space-y-6">
         <section className="rounded-xl bg-[#0f172a] border border-white/10 p-6">
-          <h1 className="text-2xl font-bold text-white">
-            Mock Interviews
-          </h1>
+          <h1 className="text-2xl font-bold text-white">Mock Interviews</h1>
 
           <p className="mt-2 text-sm text-gray-400 max-w-2xl">
-            Start a new session and practice AI-generated questions for your target role.
+            Start a new session and practice AI-generated questions for your
+            target role.
           </p>
         </section>
 
@@ -100,7 +107,10 @@ export default function InterviewSessionsPage() {
           title="Start New Session"
           subtitle="Create a role-based mock interview in a few clicks"
         >
-          <form onSubmit={handleCreateSession} className="grid gap-4 md:grid-cols-2">
+          <form
+            onSubmit={handleCreateSession}
+            className="grid gap-4 md:grid-cols-2"
+          >
             <Input
               label="Target role"
               name="targetRole"
@@ -121,8 +131,27 @@ export default function InterviewSessionsPage() {
                 bg-[#020617] border border-white/10 text-white
                 focus:ring-blue-500/30
                 px-4 py-3 text-sm outline-none 
-                focus:ring-2 focus:ring-secondary/30"              >
+                focus:ring-2 focus:ring-secondary/30"
+              >
                 {interviewTypeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <label className="block text-sm font-medium text-textPrimary">
+                Difficulty Level
+              </label>
+              <select
+                name="difficultyLevel"
+                value={formData.difficultyLevel}
+                onChange={handleChange}
+                className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-textPrimary outline-none transition-all duration-200 focus:border-secondary focus:ring-4 focus:ring-secondary/20"
+              >
+                {difficultyOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -180,7 +209,8 @@ export default function InterviewSessionsPage() {
                         {session.targetRole}
                       </h3>
                       <p className="mt-1 text-sm text-gray-400">
-                        {session.interviewType} • {session.totalQuestions} questions
+                        {session.interviewType} • {session.totalQuestions}{" "}
+                        questions
                       </p>
                       <p className="mt-1 text-xs text-gray-500">
                         Created: {formatDate(session.createdAt)}

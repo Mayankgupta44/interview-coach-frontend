@@ -1,11 +1,22 @@
-import Textarea from "../ui/Textarea";
 import Button from "../ui/Button";
+import Textarea from "../ui/Textarea";
+import AudioRecorder from "./AudioRecorder";
 
 export default function RetryPanel({
-  value,
-  onChange,
-  onSubmit,
-  loading,
+  mode = "TEXT",
+  onModeChange,
+  textValue,
+  onTextChange,
+  onTextSubmit,
+  textLoading,
+  recorder,
+  onTranscribe,
+  transcribing,
+  transcript,
+  onTranscriptChange,
+  onSubmitTranscript,
+  submitting,
+  audioUrl,
 }) {
   return (
     <div className="rounded-xl bg-[#0f172a] border border-white/10 p-5 shadow-sm">
@@ -14,23 +25,70 @@ export default function RetryPanel({
       </h3>
 
       <p className="mt-1 text-sm text-gray-400">
-        Rewrite your answer using the feedback above and submit again.
+        Rewrite or record an improved answer using the feedback above.
       </p>
 
-      <div className="mt-4">
-        <Textarea
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          rows={5}
-          placeholder="Write improved answer here..."
-        />
+      <div className="mt-4 flex gap-2">
+        <button
+          type="button"
+          onClick={() => onModeChange("TEXT")}
+          className={`rounded-lg px-3 py-2 text-sm transition-all duration-200 ${
+            mode !== "AUDIO"
+              ? "bg-primary text-white"
+              : "bg-[#020617] text-gray-400 border border-white/10 hover:bg-[#111827]"
+          }`}
+        >
+          Type Improved Answer
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onModeChange("AUDIO")}
+          className={`rounded-lg px-3 py-2 text-sm transition-all duration-200 ${
+            mode === "AUDIO"
+              ? "bg-primary text-white"
+              : "bg-[#020617] text-gray-400 border border-white/10 hover:bg-[#111827]"
+          }`}
+        >
+          Record Improved Answer
+        </button>
       </div>
 
-      <div className="mt-4">
-        <Button className="w-xs px-6" onClick={onSubmit} loading={loading}>
-          Re-evaluate Answer
-        </Button>
-      </div>
+      {mode === "AUDIO" ? (
+        <div className="mt-4">
+          <AudioRecorder
+            recorder={recorder}
+            onTranscribe={onTranscribe}
+            transcribing={transcribing}
+            transcript={transcript}
+            onTranscriptChange={onTranscriptChange}
+            onSubmitTranscript={onSubmitTranscript}
+            submitting={submitting}
+            audioUrl={audioUrl}
+          />
+        </div>
+      ) : (
+        <>
+          <div className="mt-4">
+            <Textarea
+              value={textValue}
+              onChange={(e) => onTextChange(e.target.value)}
+              rows={5}
+              placeholder="Write improved answer here..."
+            />
+          </div>
+
+          <div className="mt-4">
+            <Button
+              className="w-xs px-6"
+              onClick={onTextSubmit}
+              loading={textLoading}
+            >
+              Re-evaluate Answer
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
