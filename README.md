@@ -64,4 +64,30 @@ npm run dev
 
 Frontend is under active development. Core UI and main flow are implemented.
 
-```
+---
+
+## Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard-page.png)
+
+### Profile
+![Profile](screenshots/profile-page.png)
+
+### Resume & Job Description
+![Resume and Job Description](screenshots/resume-job-description-page.png)
+
+### Skill Gap Analysis
+![Skill Gap Analysis](screenshots/skill-gap-analysis-page.png)
+
+### Mock Interviews
+![Mock Interviews](screenshots/mock-interviews-page.png)
+
+### Interview Result - Question 1
+![Interview Result Question 1](screenshots/interview-result-question-1.png)
+
+### Interview Result - Question 2
+![Interview Result Question 2](screenshots/interview-result-question-2.png)
+
+### Interview Result - Question 5
+![Interview Result Question 5](screenshots/interview-result-question-5.png)
