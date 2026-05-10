@@ -31,8 +31,7 @@ export default function QuestionReviewCard({
   const [retryMode, setRetryMode] = useState("TEXT");
   const [answerText, setAnswerText] = useState("");
   const [improvedText, setImprovedText] = useState("");
-  const [lastSubmittedAttempt, handleSubmitTextRetrysetLastSubmittedAttempt] =
-    useState(null);
+  const [lastSubmittedAttempt, setLastSubmittedAttempt] = useState(null);
 
   const [firstTranscript, setFirstTranscript] = useState("");
   const [firstAudioUrl, setFirstAudioUrl] = useState("");

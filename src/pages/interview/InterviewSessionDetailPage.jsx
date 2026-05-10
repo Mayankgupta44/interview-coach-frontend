@@ -61,24 +61,6 @@ export default function InterviewSessionDetailPage() {
     }
   }
 
-  async function loadAttemptsForQuestion(questionId) {
-    try {
-      const attempts = await getAttempts(sessionId, questionId);
-      setAttemptsMap((prev) => ({ ...prev, [questionId]: attempts || [] }));
-
-      if (attempts?.length) {
-        const comparison = await getLatestAttemptComparison(
-          sessionId,
-          questionId,
-        );
-
-        setComparisonMap((prev) => ({ ...prev, [questionId]: comparison }));
-      }
-    } catch {
-      setAttemptsMap((prev) => ({ ...prev, [questionId]: [] }));
-    }
-  }
-
   const answerMap = useMemo(() => {
     const map = {};
 
@@ -213,6 +195,7 @@ export default function InterviewSessionDetailPage() {
 
       return savedAttempt;
     } catch (err) {
+      console.error("Improve answer failed:", err);
       setError(err?.response?.data?.message || "Failed to improve answer.");
       return null;
     } finally {
@@ -244,6 +227,30 @@ export default function InterviewSessionDetailPage() {
     } finally {
       setImprovingMap((prev) => ({ ...prev, [questionId]: false }));
     }
+  }
+
+  function addAttemptToState(questionId, savedAttempt) {
+    if (!savedAttempt) return;
+
+    const normalizedQuestionId = Number(savedAttempt?.questionId || questionId);
+
+    setAttemptsMap((prev) => {
+      const previousAttempts = prev[normalizedQuestionId] || [];
+
+      const updatedAttempts = [
+        ...previousAttempts.filter((attempt) => attempt.id !== savedAttempt.id),
+        savedAttempt,
+      ].sort((a, b) => (a.attemptNumber || 0) - (b.attemptNumber || 0));
+
+      const updatedAttemptsMap = {
+        ...prev,
+        [normalizedQuestionId]: updatedAttempts,
+      };
+
+      setComparisonMap(buildComparisonMap(updatedAttemptsMap));
+
+      return updatedAttemptsMap;
+    });
   }
 
   if (loading) {
@@ -379,27 +386,6 @@ function buildComparisonMap(attemptsMap) {
   });
 
   return map;
-}
-
-function addAttemptToState(questionId, savedAttempt) {
-  const normalizedQuestionId = Number(savedAttempt?.questionId || questionId);
-
-  setAttemptsMap((prev) => {
-    const previousAttempts = prev[normalizedQuestionId] || [];
-
-    const updatedAttempts = [...previousAttempts, savedAttempt].sort(
-      (a, b) => (a.attemptNumber || 0) - (b.attemptNumber || 0),
-    );
-
-    const updatedAttemptsMap = {
-      ...prev,
-      [normalizedQuestionId]: updatedAttempts,
-    };
-
-    setComparisonMap(buildComparisonMap(updatedAttemptsMap));
-
-    return updatedAttemptsMap;
-  });
 }
 
 function ProgressCard({ label, value }) {
