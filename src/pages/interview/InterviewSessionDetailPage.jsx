@@ -12,8 +12,7 @@ import {
   submitAudioTranscriptAnswer,
 } from "../../services/answerService";
 import {
-  getAttempts,
-  getLatestAttemptComparison,
+  getSessionAttempts,
   submitAttempt,
   submitAudioAttempt,
 } from "../../services/attemptService";
@@ -36,26 +35,23 @@ export default function InterviewSessionDetailPage() {
     loadSessionData();
   }, [sessionId]);
 
-  useEffect(() => {
-    if (session?.questions?.length) {
-      session.questions.forEach((question) => {
-        loadAttemptsForQuestion(question.id);
-      });
-    }
-  }, [session]);
-
   async function loadSessionData() {
     try {
       setLoading(true);
       setError("");
 
-      const [sessionData, answersData] = await Promise.all([
+      const [sessionData, answersData, attemptsData] = await Promise.all([
         getInterviewSessionById(sessionId),
         getAnswersBySessionId(sessionId).catch(() => []),
+        getSessionAttempts(sessionId).catch(() => []),
       ]);
+
+      const groupedAttempts = groupAttemptsByQuestion(attemptsData || []);
 
       setSession(sessionData);
       setAnswers(answersData || []);
+      setAttemptsMap(groupedAttempts);
+      setComparisonMap(buildComparisonMap(groupedAttempts));
     } catch (err) {
       setError(
         err?.response?.data?.message || "Failed to load interview session.",
@@ -117,10 +113,26 @@ export default function InterviewSessionDetailPage() {
         );
       });
 
-      await loadAttemptsForQuestion(questionId);
+      setSession((prev) => {
+        if (!prev) return prev;
 
-      const updatedSession = await getInterviewSessionById(sessionId);
-      setSession(updatedSession);
+        const alreadyAnswered = answers.some(
+          (item) => item.questionId === questionId,
+        );
+
+        const updatedAnsweredCount = alreadyAnswered
+          ? answers.length
+          : answers.length + 1;
+
+        const totalQuestions =
+          prev.questions?.length || prev.totalQuestions || 0;
+
+        return {
+          ...prev,
+          status:
+            updatedAnsweredCount >= totalQuestions ? "COMPLETED" : prev.status,
+        };
+      });
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to submit answer.");
     } finally {
@@ -154,10 +166,26 @@ export default function InterviewSessionDetailPage() {
         );
       });
 
-      await loadAttemptsForQuestion(questionId);
+      setSession((prev) => {
+        if (!prev) return prev;
 
-      const updatedSession = await getInterviewSessionById(sessionId);
-      setSession(updatedSession);
+        const alreadyAnswered = answers.some(
+          (item) => item.questionId === questionId,
+        );
+
+        const updatedAnsweredCount = alreadyAnswered
+          ? answers.length
+          : answers.length + 1;
+
+        const totalQuestions =
+          prev.questions?.length || prev.totalQuestions || 0;
+
+        return {
+          ...prev,
+          status:
+            updatedAnsweredCount >= totalQuestions ? "COMPLETED" : prev.status,
+        };
+      });
     } catch (err) {
       setError(
         err?.response?.data?.message || "Audio answer submission failed.",
@@ -177,11 +205,11 @@ export default function InterviewSessionDetailPage() {
       setError("");
       setImprovingMap((prev) => ({ ...prev, [questionId]: true }));
 
-      await submitAttempt(sessionId, questionId, {
+      const savedAttempt = await submitAttempt(sessionId, questionId, {
         answerText: answerText.trim(),
       });
 
-      await loadAttemptsForQuestion(questionId);
+      addAttemptToState(questionId, savedAttempt);
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to improve answer.");
     } finally {
@@ -199,12 +227,12 @@ export default function InterviewSessionDetailPage() {
       setError("");
       setImprovingMap((prev) => ({ ...prev, [questionId]: true }));
 
-      await submitAudioAttempt(sessionId, questionId, {
+      const savedAttempt = await submitAudioAttempt(sessionId, questionId, {
         transcriptText: payload.transcriptText.trim(),
         audioUrl: payload.audioUrl,
       });
 
-      await loadAttemptsForQuestion(questionId);
+      addAttemptToState(questionId, savedAttempt);
     } catch (err) {
       setError(err?.response?.data?.message || "Audio re-evaluation failed.");
     } finally {
@@ -288,6 +316,81 @@ export default function InterviewSessionDetailPage() {
       </div>
     </MainLayout>
   );
+}
+
+function groupAttemptsByQuestion(attempts) {
+  const map = {};
+
+  attempts.forEach((attempt) => {
+    if (!attempt?.questionId) return;
+
+    if (!map[attempt.questionId]) {
+      map[attempt.questionId] = [];
+    }
+
+    map[attempt.questionId].push(attempt);
+  });
+
+  Object.keys(map).forEach((questionId) => {
+    map[questionId] = map[questionId].sort(
+      (a, b) => a.attemptNumber - b.attemptNumber,
+    );
+  });
+
+  return map;
+}
+
+function buildComparisonMap(attemptsMap) {
+  const map = {};
+
+  Object.entries(attemptsMap).forEach(([questionId, attempts]) => {
+    if (!attempts?.length) return;
+
+    const currentAttempt = attempts[attempts.length - 1];
+    const previousAttempt =
+      attempts.length > 1 ? attempts[attempts.length - 2] : null;
+
+    map[questionId] = {
+      previousAttempt,
+      currentAttempt,
+      overallScoreDifference: previousAttempt
+        ? currentAttempt.evaluation?.overallScore -
+          previousAttempt.evaluation?.overallScore
+        : null,
+      technicalScoreDifference: previousAttempt
+        ? currentAttempt.evaluation?.technicalScore -
+          previousAttempt.evaluation?.technicalScore
+        : null,
+      relevanceScoreDifference: previousAttempt
+        ? currentAttempt.evaluation?.relevanceScore -
+          previousAttempt.evaluation?.relevanceScore
+        : null,
+      communicationScoreDifference: previousAttempt
+        ? currentAttempt.evaluation?.communicationScore -
+          previousAttempt.evaluation?.communicationScore
+        : null,
+    };
+  });
+
+  return map;
+}
+
+function addAttemptToState(questionId, savedAttempt) {
+  setAttemptsMap((prev) => {
+    const updatedQuestionAttempts = [
+      ...(prev[questionId] || []),
+      savedAttempt,
+    ].sort((a, b) => a.attemptNumber - b.attemptNumber);
+
+    const updatedMap = {
+      ...prev,
+      [questionId]: updatedQuestionAttempts,
+    };
+
+    setComparisonMap(buildComparisonMap(updatedMap));
+
+    return updatedMap;
+  });
 }
 
 function ProgressCard({ label, value }) {

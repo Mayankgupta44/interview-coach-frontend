@@ -3,29 +3,21 @@ import api from "./api";
 export async function submitAttempt(sessionId, questionId, payload) {
   const response = await api.post(
     `/interviews/${sessionId}/questions/${questionId}/attempts`,
-    payload
+    payload,
   );
+
   return response.data;
 }
 
-export async function getAttempts(sessionId, questionId) {
-  const response = await api.get(
-    `/interviews/${sessionId}/questions/${questionId}/attempts`
-  );
-  return response.data;
-}
-
-export async function getLatestAttemptComparison(sessionId, questionId) {
-  const response = await api.get(
-    `/interviews/${sessionId}/questions/${questionId}/attempts/compare-latest`
-  );
+export async function getSessionAttempts(sessionId) {
+  const response = await api.get(`/interviews/${sessionId}/attempts`);
   return response.data;
 }
 
 export async function submitAudioAttempt(sessionId, questionId, payload) {
   const response = await api.post(
     `/interviews/${sessionId}/questions/${questionId}/attempts/audio-transcript`,
-    payload
+    payload,
   );
 
   return response.data;
