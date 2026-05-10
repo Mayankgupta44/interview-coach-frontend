@@ -6,7 +6,6 @@ import SectionCard from "../ui/SectionCard";
 import EvaluationPanel from "./EvaluationPanel";
 import RetryPanel from "./RetryPanel";
 import AttemptHistory from "./AttemptHistory";
-import ImprovementComparison from "./ImprovementComparison";
 import AudioRecorder from "./AudioRecorder";
 import useAudioRecorder from "../../hooks/useAudioRecorder";
 import { transcribeAudio } from "../../services/audioService";
@@ -53,12 +52,12 @@ export default function QuestionReviewCard({
   }
 
   async function handleSubmitTextRetry() {
-  const savedAttempt = await onSubmitTextAttempt(question.id, improvedText);
+    const savedAttempt = await onSubmitTextAttempt(question.id, improvedText);
 
-  if (savedAttempt) {
-    setImprovedText("");
+    if (savedAttempt) {
+      setImprovedText("");
+    }
   }
-}
 
   async function handleTranscribeRetryAnswer() {
     if (!retryRecorder.audioBlob) return;
@@ -76,17 +75,17 @@ export default function QuestionReviewCard({
   }
 
   async function handleSubmitRetryTranscript() {
-  const savedAttempt = await onSubmitAudioAttempt(question.id, {
-    transcriptText: retryTranscript,
-    audioUrl: retryAudioUrl,
-  });
+    const savedAttempt = await onSubmitAudioAttempt(question.id, {
+      transcriptText: retryTranscript,
+      audioUrl: retryAudioUrl,
+    });
 
-  if (savedAttempt) {
-    retryRecorder.resetRecording();
-    setRetryTranscript("");
-    setRetryAudioUrl("");
+    if (savedAttempt) {
+      retryRecorder.resetRecording();
+      setRetryTranscript("");
+      setRetryAudioUrl("");
+    }
   }
-}
 
   async function handleTranscribeFirstAnswer() {
     if (!firstAnswerRecorder.audioBlob) return;
@@ -234,8 +233,6 @@ export default function QuestionReviewCard({
             submitting={improving}
             audioUrl={retryAudioUrl}
           />
-
-          <ImprovementComparison comparison={comparison} />
 
           <AttemptHistory attempts={attempts} />
         </div>
