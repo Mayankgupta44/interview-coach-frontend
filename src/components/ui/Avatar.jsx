@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Avatar({ name = "", imageUrl = "", size = "md" }) {
   const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    setImageError(false);
+  }, [imageUrl]);
 
   const sizes = {
     sm: "h-8 w-8 text-xs",
@@ -11,7 +15,7 @@ export default function Avatar({ name = "", imageUrl = "", size = "md" }) {
   };
 
   const initials = getInitials(name);
-  const shouldShowImage = imageUrl && !imageError;
+  const shouldShowImage = Boolean(imageUrl) && !imageError;
 
   return (
     <div

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Avatar from "../ui/Avatar";
-import { API_BASE_URL } from "../../utils/constants";
+import { getProfileImageUrl } from "../../utils/profileImageUrl";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -17,19 +17,9 @@ export default function Navbar() {
   const navClass = ({ isActive }) =>
     `rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 ${
       isActive
-        ? "bg-blue-500/10 text-blue-400 getProfileImageUrldark:shadow-blue-500/20"
+        ? "bg-blue-500/10 text-blue-400 dark:shadow-blue-500/20"
         : "text-gray-400 hover:bg-white/10 hover:text-white"
     }`;
-
-  function getProfileImageUrl(profileImageUrl) {
-    if (!profileImageUrl) return "";
-
-    if (profileImageUrl.startsWith("http")) {
-      return profileImageUrl;
-    }
-
-    return `${API_BASE_URL}${profileImageUrl.startsWith("/") ? profileImageUrl : `/${profileImageUrl}`}`;
-  }
 
   return (
     <header

@@ -1,15 +1,6 @@
 import Avatar from "../ui/Avatar";
+import { getProfileImageUrl } from "../../utils/profileImageUrl";
 import { API_BASE_URL } from "../../utils/constants";
-
-function getProfileImageUrl(profileImageUrl) {
-  if (!profileImageUrl) return "";
-
-  if (profileImageUrl.startsWith("http")) {
-    return profileImageUrl;
-  }
-
-  return `${API_BASE_URL}${profileImageUrl.startsWith("/") ? profileImageUrl : `/${profileImageUrl}`}`;
-}
 
 export default function ProfileCard({ profile }) {
   const imageUrl = getProfileImageUrl(profile?.profileImageUrl);

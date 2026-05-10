@@ -17,7 +17,7 @@ const experienceOptions = [
 ];
 
 export default function ProfilePage() {
-  const { updateCurrentUser } = useAuth();
+  const { user, updateCurrentUser } = useAuth();
 
   const [profile, setProfile] = useState(null);
 
@@ -83,21 +83,39 @@ export default function ProfilePage() {
 
       const data = await uploadProfileImage(profileImageFile);
 
+      const uploadedImageUrl =
+        data?.profileImageUrl || data?.imageUrl || data?.url || "";
+
+      if (!uploadedImageUrl) {
+        throw new Error("Profile image URL not found in upload response.");
+      }
+
+      const updatedProfile = {
+        ...(profile || {}),
+        ...formData,
+        profileImageUrl: uploadedImageUrl,
+      };
+
       setFormData((prev) => ({
         ...prev,
-        profileImageUrl: data.profileImageUrl,
+        profileImageUrl: uploadedImageUrl,
       }));
 
-      setProfile((prev) => ({
-        ...prev,
-        profileImageUrl: data.profileImageUrl,
-      }));
+      setProfile(updatedProfile);
+
+      updateCurrentUser({
+        ...(user || {}),
+        ...updatedProfile,
+        profileImageUrl: uploadedImageUrl,
+      });
 
       setSuccessMessage("Profile image uploaded successfully.");
       setProfileImageFile(null);
     } catch (err) {
       setServerError(
-        err?.response?.data?.message || "Failed to upload profile image.",
+        err?.response?.data?.message ||
+          err?.message ||
+          "Failed to upload profile image.",
       );
     } finally {
       setUploadingImage(false);
@@ -159,8 +177,6 @@ export default function ProfilePage() {
       setProfile(updatedProfile);
       updateCurrentUser(updatedProfile);
       setSuccessMessage("Profile updated successfully.");
-
-      await loadProfile();
     } catch (err) {
       setServerError(
         err?.response?.data?.message || "Failed to update profile.",
@@ -234,7 +250,8 @@ export default function ProfilePage() {
                       name="experienceLevel"
                       value={formData.experienceLevel}
                       onChange={handleChange}
-                      className="w-full rounded-xl bg-[#020617] border border-white/10 text-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/30"                >
+                      className="w-full rounded-xl bg-[#020617] border border-white/10 text-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/30"
+                    >
                       {experienceOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
@@ -270,13 +287,16 @@ export default function ProfilePage() {
                       {/* Custom Button */}
                       <label
                         htmlFor="profileImage"
-                        className="cursor-pointer rounded-xl bg-[#020617] border border-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition"                     >
+                        className="cursor-pointer rounded-xl bg-[#020617] border border-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition"
+                      >
                         Choose File
                       </label>
 
                       {/* Selected File UI */}
                       {profileImageFile && (
-                        <span className="text-sm px-3 py-1 rounded-md bg-blue-500/10 text-blue-400 font-medium">                          {profileImageFile.name}
+                        <span className="text-sm px-3 py-1 rounded-md bg-blue-500/10 text-blue-400 font-medium">
+                          {" "}
+                          {profileImageFile.name}
                         </span>
                       )}
                     </div>
@@ -286,7 +306,8 @@ export default function ProfilePage() {
                       type="button"
                       onClick={handleUploadProfileImage}
                       disabled={!profileImageFile || uploadingImage}
-                      className="rounded-xl px-4 py-2 text-sm font-medium bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition"                    >
+                      className="rounded-xl px-4 py-2 text-sm font-medium bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition"
+                    >
                       {uploadingImage ? "Uploading..." : "Upload Image"}
                     </button>
                   </div>
@@ -345,7 +366,9 @@ export default function ProfilePage() {
                 </div>
 
                 {successMessage && (
-                  <p className="mt-4 text-sm text-green-400">{successMessage}</p>
+                  <p className="mt-4 text-sm text-green-400">
+                    {successMessage}
+                  </p>
                 )}
               </form>
             </div>
