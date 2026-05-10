@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Avatar from "../ui/Avatar";
+import { API_BASE_URL } from "../../utils/constants";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -16,12 +17,9 @@ export default function Navbar() {
   const navClass = ({ isActive }) =>
     `rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 ${
       isActive
-        ? "bg-blue-500/10 text-blue-400 dark:shadow-blue-500/20"
+        ? "bg-blue-500/10 text-blue-400 getProfileImageUrldark:shadow-blue-500/20"
         : "text-gray-400 hover:bg-white/10 hover:text-white"
     }`;
-
-  const API_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
   function getProfileImageUrl(profileImageUrl) {
     if (!profileImageUrl) return "";
@@ -30,7 +28,7 @@ export default function Navbar() {
       return profileImageUrl;
     }
 
-    return `${API_BASE_URL.replace("/api", "")}${profileImageUrl}`;
+    return `${API_BASE_URL}${profileImageUrl.startsWith("/") ? profileImageUrl : `/${profileImageUrl}`}`;
   }
 
   return (
@@ -110,9 +108,7 @@ export default function Navbar() {
                 <p className="truncate text-sm font-semibold text-white">
                   {user?.fullName || "User"}
                 </p>
-                <p className="truncate text-xs text-gray-400">
-                  {user?.email}
-                </p>
+                <p className="truncate text-xs text-gray-400">{user?.email}</p>
               </div>
 
               <div className="p-2">

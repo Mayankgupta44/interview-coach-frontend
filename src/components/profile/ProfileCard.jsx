@@ -1,7 +1,5 @@
 import Avatar from "../ui/Avatar";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+import { API_BASE_URL } from "../../utils/constants";
 
 function getProfileImageUrl(profileImageUrl) {
   if (!profileImageUrl) return "";
@@ -10,7 +8,7 @@ function getProfileImageUrl(profileImageUrl) {
     return profileImageUrl;
   }
 
-  return `${API_BASE_URL.replace("/api", "")}${profileImageUrl}`;
+  return `${API_BASE_URL}${profileImageUrl.startsWith("/") ? profileImageUrl : `/${profileImageUrl}`}`;
 }
 
 export default function ProfileCard({ profile }) {

@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export default function Avatar({ name = "", imageUrl = "", size = "md" }) {
+  const [imageError, setImageError] = useState(false);
+
   const sizes = {
     sm: "h-8 w-8 text-xs",
     md: "h-10 w-10 text-sm",
@@ -7,6 +11,7 @@ export default function Avatar({ name = "", imageUrl = "", size = "md" }) {
   };
 
   const initials = getInitials(name);
+  const shouldShowImage = imageUrl && !imageError;
 
   return (
     <div
@@ -19,11 +24,12 @@ export default function Avatar({ name = "", imageUrl = "", size = "md" }) {
       transition 
       ${sizes[size] || sizes.md}`}
     >
-      {imageUrl ? (
+      {shouldShowImage ? (
         <img
           src={imageUrl}
           alt={name || "User avatar"}
           className="h-full w-full object-cover"
+          onError={() => setImageError(true)}
         />
       ) : (
         <span>{initials}</span>
