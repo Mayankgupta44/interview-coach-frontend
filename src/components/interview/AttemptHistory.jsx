@@ -12,7 +12,7 @@ export default function AttemptHistory({ attempts = [] }) {
       <div className="mt-4 space-y-3">
         {attempts.map((attempt) => (
           <div
-            key={attempt.id}
+            key={`${attempt.questionId}-${attempt.id}-${attempt.attemptNumber}`}
             className="rounded-xl bg-[#020617] p-4 border border-white/10"
           >
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

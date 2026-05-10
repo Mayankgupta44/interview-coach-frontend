@@ -198,7 +198,7 @@ export default function InterviewSessionDetailPage() {
   async function handleSubmitTextAttempt(questionId, answerText) {
     if (!answerText?.trim()) {
       setError("Please write an improved answer before submitting.");
-      return;
+      return null;
     }
 
     try {
@@ -210,8 +210,11 @@ export default function InterviewSessionDetailPage() {
       });
 
       addAttemptToState(questionId, savedAttempt);
+
+      return savedAttempt;
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to improve answer.");
+      return null;
     } finally {
       setImprovingMap((prev) => ({ ...prev, [questionId]: false }));
     }
@@ -220,7 +223,7 @@ export default function InterviewSessionDetailPage() {
   async function handleSubmitAudioAttempt(questionId, payload) {
     if (!payload?.transcriptText?.trim()) {
       setError("Transcript is required before submitting improved answer.");
-      return;
+      return null;
     }
 
     try {
@@ -233,8 +236,11 @@ export default function InterviewSessionDetailPage() {
       });
 
       addAttemptToState(questionId, savedAttempt);
+
+      return savedAttempt;
     } catch (err) {
       setError(err?.response?.data?.message || "Audio re-evaluation failed.");
+      return null;
     } finally {
       setImprovingMap((prev) => ({ ...prev, [questionId]: false }));
     }
@@ -376,20 +382,23 @@ function buildComparisonMap(attemptsMap) {
 }
 
 function addAttemptToState(questionId, savedAttempt) {
-  setAttemptsMap((prev) => {
-    const updatedQuestionAttempts = [
-      ...(prev[questionId] || []),
-      savedAttempt,
-    ].sort((a, b) => a.attemptNumber - b.attemptNumber);
+  const normalizedQuestionId = Number(savedAttempt?.questionId || questionId);
 
-    const updatedMap = {
+  setAttemptsMap((prev) => {
+    const previousAttempts = prev[normalizedQuestionId] || [];
+
+    const updatedAttempts = [...previousAttempts, savedAttempt].sort(
+      (a, b) => (a.attemptNumber || 0) - (b.attemptNumber || 0),
+    );
+
+    const updatedAttemptsMap = {
       ...prev,
-      [questionId]: updatedQuestionAttempts,
+      [normalizedQuestionId]: updatedAttempts,
     };
 
-    setComparisonMap(buildComparisonMap(updatedMap));
+    setComparisonMap(buildComparisonMap(updatedAttemptsMap));
 
-    return updatedMap;
+    return updatedAttemptsMap;
   });
 }
 

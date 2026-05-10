@@ -31,6 +31,8 @@ export default function QuestionReviewCard({
   const [retryMode, setRetryMode] = useState("TEXT");
   const [answerText, setAnswerText] = useState("");
   const [improvedText, setImprovedText] = useState("");
+  const [lastSubmittedAttempt, handleSubmitTextRetrysetLastSubmittedAttempt] =
+    useState(null);
 
   const [firstTranscript, setFirstTranscript] = useState("");
   const [firstAudioUrl, setFirstAudioUrl] = useState("");
@@ -53,8 +55,12 @@ export default function QuestionReviewCard({
   }
 
   async function handleSubmitTextRetry() {
-    await onSubmitTextAttempt(question.id, improvedText);
-    setImprovedText("");
+    const savedAttempt = await onSubmitTextAttempt(question.id, improvedText);
+
+    if (savedAttempt) {
+      setLastSubmittedAttempt(savedAttempt);
+      setImprovedText("");
+    }
   }
 
   async function handleTranscribeRetryAnswer() {
@@ -73,14 +79,17 @@ export default function QuestionReviewCard({
   }
 
   async function handleSubmitRetryTranscript() {
-    await onSubmitAudioAttempt(question.id, {
+    const savedAttempt = await onSubmitAudioAttempt(question.id, {
       transcriptText: retryTranscript,
       audioUrl: retryAudioUrl,
     });
 
-    retryRecorder.resetRecording();
-    setRetryTranscript("");
-    setRetryAudioUrl("");
+    if (savedAttempt) {
+      setLastSubmittedAttempt(savedAttempt);
+      retryRecorder.resetRecording();
+      setRetryTranscript("");
+      setRetryAudioUrl("");
+    }
   }
 
   async function handleTranscribeFirstAnswer() {
@@ -229,6 +238,23 @@ export default function QuestionReviewCard({
             submitting={improving}
             audioUrl={retryAudioUrl}
           />
+
+          {lastSubmittedAttempt ? (
+            <SectionBlock title="Latest Improved Answer">
+              <p className="whitespace-pre-line text-sm leading-6 text-textSecondary">
+                {lastSubmittedAttempt.transcriptText ||
+                  lastSubmittedAttempt.answerText}
+              </p>
+
+              {lastSubmittedAttempt.evaluation ? (
+                <div className="mt-4">
+                  <EvaluationPanel
+                    evaluation={lastSubmittedAttempt.evaluation}
+                  />
+                </div>
+              ) : null}
+            </SectionBlock>
+          ) : null}
 
           <ImprovementComparison comparison={comparison} />
 
