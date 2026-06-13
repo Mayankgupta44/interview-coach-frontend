@@ -40,13 +40,20 @@ export default function QuestionReviewCard({
   const [transcribingRetry, setTranscribingRetry] = useState(false);
 
   const isAnswered = Boolean(submittedAnswer);
-
+  
+  const isTextAnswerValid = answerText.trim().length >= 20;
+  const isAudioAnswerValid = !!firstAnswerRecorder.audioBlob;
+  
   async function handleSubmitText() {
+    if (!isTextAnswerValid) return;
+  
     await onSubmitTextAnswer(question.id, answerText);
     setAnswerText("");
   }
 
   async function handleSubmitAudio() {
+    if (!isAudioAnswerValid) return;
+  
     await onSubmitAudioAnswer(question.id, firstAnswerRecorder.audioBlob);
     firstAnswerRecorder.resetRecording();
   }
@@ -183,8 +190,18 @@ export default function QuestionReviewCard({
                 placeholder="Write your answer..."
               />
 
+              {answerText && answerText.trim().length < 20 && (
+                <p className="text-xs text-red-400">
+                  Minimum 20 characters required
+                </p>
+              )}
+
               <div className="max-w-xs">
-                <Button onClick={handleSubmitText} loading={submitting}>
+                <Button
+                  onClick={handleSubmitText}
+                  loading={submitting}
+                  disabled={!isTextAnswerValid || submitting}
+                >
                   Submit Answer
                 </Button>
               </div>
