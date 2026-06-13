@@ -57,11 +57,6 @@ export default function QuestionReviewCard({
 
   const [textSubmitAttempted, setTextSubmitAttempted] = useState(false);
   
-  useEffect(() => {
-      if (isTextAnswerValid) {
-        setTextSubmitAttempted(false);
-      }
-    }, [answerText]);
   const [retryTextAttempted, setRetryTextAttempted] = useState(false);
 
   async function handleSubmitText() {
@@ -229,7 +224,10 @@ export default function QuestionReviewCard({
             <div className="space-y-4">
               <Textarea
                 value={answerText}
-                onChange={(e) => setAnswerText(e.target.value)}
+                onChange={(e) => {
+                  setAnswerText(e.target.value);
+                  if (textSubmitAttempted) setTextSubmitAttempted(false);
+                }}
                 rows={6}
                 placeholder="Write your answer..."
               />
