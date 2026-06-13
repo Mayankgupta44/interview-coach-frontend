@@ -41,13 +41,24 @@ export default function QuestionReviewCard({
 
   const isAnswered = Boolean(submittedAnswer);
   
-  const isTextAnswerValid = answerText.trim().length >= 20;
-  const isAudioAnswerValid = !!firstAnswerRecorder.audioBlob;
+  const MIN_LEN = 20;
+
+  const isTextAnswerValid = answerText.trim().length >= MIN_LEN;
+
+  const isAudioAnswerValid =
+    firstAnswerRecorder.audioBlob &&
+    firstTranscript.trim().length >= MIN_LEN;
+
+  const isRetryTextValid =
+    improvedText.trim().length >= MIN_LEN;
+
+  const isRetryAudioValid =
+    retryTranscript.trim().length >= MIN_LEN;
   
   async function handleSubmitText() {
     if (!isTextAnswerValid) return;
   
-    await onSubmitTextAnswer(question.id, answerText);
+    await onSubmitTextAnswer(question.id, answerText.trim());
     setAnswerText("");
   }
 
@@ -59,7 +70,12 @@ export default function QuestionReviewCard({
   }
 
   async function handleSubmitTextRetry() {
-    const savedAttempt = await onSubmitTextAttempt(question.id, improvedText);
+    if (improvedText.trim().length < 20) return;
+
+    const savedAttempt = await onSubmitTextAttempt(
+      question.id,
+      improvedText.trim()
+    );
 
     if (savedAttempt) {
       setImprovedText("");
@@ -82,8 +98,10 @@ export default function QuestionReviewCard({
   }
 
   async function handleSubmitRetryTranscript() {
+    if (!isRetryAudioValid) return;
+
     const savedAttempt = await onSubmitAudioAttempt(question.id, {
-      transcriptText: retryTranscript,
+      transcriptText: retryTranscript.trim(),
       audioUrl: retryAudioUrl,
     });
 
@@ -108,6 +126,7 @@ export default function QuestionReviewCard({
   }
 
   async function handleSubmitFirstTranscript() {
+    if (!isAudioAnswerValid) return;
     await onSubmitAudioAnswer(question.id, {
       transcriptText: firstTranscript,
       audioUrl: firstAudioUrl,
@@ -171,16 +190,26 @@ export default function QuestionReviewCard({
           </div>
 
           {answerMode === "AUDIO" ? (
-            <AudioRecorder
-              recorder={firstAnswerRecorder}
-              onTranscribe={handleTranscribeFirstAnswer}
-              transcribing={transcribingFirst}
-              transcript={firstTranscript}
-              onTranscriptChange={setFirstTranscript}
-              onSubmitTranscript={handleSubmitFirstTranscript}
-              submitting={submitting}
-              audioUrl={firstAudioUrl}
-            />
+            <>
+              <AudioRecorder
+                recorder={firstAnswerRecorder}
+                onTranscribe={handleTranscribeFirstAnswer}
+                transcribing={transcribingFirst}
+                transcript={firstTranscript}
+                onTranscriptChange={setFirstTranscript}
+                onSubmitTranscript={handleSubmitFirstTranscript}
+                submitting={submitting}
+                audioUrl={firstAudioUrl}
+              />
+
+              {firstTranscript &&
+                firstTranscript.trim().length > 0 &&
+                firstTranscript.trim().length < 20 && (
+                  <p className="text-xs text-red-400 mt-2">
+                    Transcript must be at least 20 characters
+                  </p>
+                )}
+            </>
           ) : (
             <div className="space-y-4">
               <Textarea
