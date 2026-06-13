@@ -79,7 +79,7 @@ export default function RetryPanel({
             />
           </div>
 
-          {textSubmitAttempted && textValue.trim().length < 20 && (
+          {retryTextAttempted && textValue.trim().length < 20 && (
             <p className="text-xs text-red-400 mt-2">
               Minimum 20 characters required
             </p>
