@@ -17,6 +17,7 @@ export default function RetryPanel({
   onSubmitTranscript,
   submitting,
   audioUrl,
+  retryTextAttempted,
 }) {
   return (
     <div className="rounded-xl bg-[#0f172a] border border-white/10 p-5 shadow-sm">
@@ -77,6 +78,12 @@ export default function RetryPanel({
               placeholder="Write improved answer here..."
             />
           </div>
+
+          {textSubmitAttempted && textValue.trim().length < 20 && (
+            <p className="text-xs text-red-400 mt-2">
+              Minimum 20 characters required
+            </p>
+          )}
 
           <div className="mt-4">
             <Button

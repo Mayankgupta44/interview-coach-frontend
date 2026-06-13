@@ -55,14 +55,15 @@ export default function QuestionReviewCard({
   const isRetryAudioValid =
     retryTranscript.trim().length >= MIN_LEN;
 
-  useEffect(() => {
-    if (isTextAnswerValid) {
-      setTextSubmitAttempted(false);
-    }
-  }, [answerText]);
-
   const [textSubmitAttempted, setTextSubmitAttempted] = useState(false);
   
+  useEffect(() => {
+      if (isTextAnswerValid) {
+        setTextSubmitAttempted(false);
+      }
+    }, [answerText]);
+  const [retryTextAttempted, setRetryTextAttempted] = useState(false);
+
   async function handleSubmitText() {
     setTextSubmitAttempted(true);
 
@@ -81,6 +82,8 @@ export default function QuestionReviewCard({
   }
 
   async function handleSubmitTextRetry() {
+    setRetryTextAttempted(true);
+
     if (improvedText.trim().length < 20) return;
 
     const savedAttempt = await onSubmitTextAttempt(
@@ -90,6 +93,7 @@ export default function QuestionReviewCard({
 
     if (savedAttempt) {
       setImprovedText("");
+      setRetryTextAttempted(false);
     }
   }
 
@@ -289,6 +293,7 @@ export default function QuestionReviewCard({
             onSubmitTranscript={handleSubmitRetryTranscript}
             submitting={improving}
             audioUrl={retryAudioUrl}
+            retryTextAttempted={retryTextAttempted}
           />
 
           <AttemptHistory attempts={attempts} />
