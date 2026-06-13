@@ -54,12 +54,23 @@ export default function QuestionReviewCard({
 
   const isRetryAudioValid =
     retryTranscript.trim().length >= MIN_LEN;
+
+  useEffect(() => {
+    if (isTextAnswerValid) {
+      setTextSubmitAttempted(false);
+    }
+  }, [answerText]);
+
+  const [textSubmitAttempted, setTextSubmitAttempted] = useState(false);
   
   async function handleSubmitText() {
+    setTextSubmitAttempted(true);
+
     if (!isTextAnswerValid) return;
-  
+
     await onSubmitTextAnswer(question.id, answerText.trim());
     setAnswerText("");
+    setTextSubmitAttempted(false);
   }
 
   async function handleSubmitAudio() {
@@ -219,7 +230,7 @@ export default function QuestionReviewCard({
                 placeholder="Write your answer..."
               />
 
-              {answerText && answerText.trim().length < 20 && (
+              {textSubmitAttempted && !isTextAnswerValid && (
                 <p className="text-xs text-red-400">
                   Minimum 20 characters required
                 </p>
