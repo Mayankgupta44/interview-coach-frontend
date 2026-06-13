@@ -232,7 +232,7 @@ export default function QuestionReviewCard({
                 placeholder="Write your answer..."
               />
 
-              {answerText.length > 0 && answerText.trim().length < 20 && (
+              {textSubmitAttempted && answerText.trim().length < 20 && (
                 <p className="text-xs text-red-400">
                   Minimum 20 characters required
                 </p>
